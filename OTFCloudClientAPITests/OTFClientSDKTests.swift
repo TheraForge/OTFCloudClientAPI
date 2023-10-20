@@ -33,13 +33,16 @@ OF SUCH DAMAGE.
  */
 
 import XCTest
+import OTFUtilities
+import OTFCDTDatastore
 @testable import OTFCloudClientAPI
 
 class OTFCloudClientAPITests: XCTestCase {
     // Testing data
     // Let's not change the following data:
     var realNetworkService: NetworkingLayer!
-
+    var blob: CDTBlobData!
+    
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         try super.setUpWithError()
@@ -83,7 +86,7 @@ extension OTFCloudClientAPITests {
 
         waitForExpectations(timeout: requestTimeoutInterval) { error in
             if let error = error {
-                print("Test failed Error: \(error.localizedDescription)")
+                OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
             }
         }
     }
@@ -104,7 +107,7 @@ extension OTFCloudClientAPITests {
 
         waitForExpectations(timeout: requestTimeoutInterval) { error in
             if let error = error {
-                print("Test failed Error: \(error.localizedDescription)")
+                OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
             }
         }
     }
@@ -112,8 +115,8 @@ extension OTFCloudClientAPITests {
     func testSocialLogin() {
         let promise = expectation(description: "There should be an error in case of wrong email/password. and error should not be nil.")
         // swiftlint:disable line_length
-        let appleIDToken = "eyJraWQiOiJZdXlYb1kiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLmludm96b25lLmNhcmRpbmFsa2l0IiwiZXhwIjoxNjM3MjM1NzA5LCJpYXQiOjE2MzcxNDkzMDksInN1YiI6IjAwMTYxMC4wMDQ3OGQzZjY5Y2M0OWFjOGVjMzEwODEyZTQ5NDk5YS4wOTA0Iiwibm9uY2UiOiI1NTFmNThkMDU4YWFiM2JiMTMzMDE3ZGRjMDMxM2Y2NzkwNjM2MGY1MDgyMTNhZThlYWY5NzFlNTczZDJmMGQ5IiwiY19oYXNoIjoiZVJVTmdxRlo2ZzZCLTVQS1I0bGJXZyIsImVtYWlsIjoiNW56NWpoeWs4NEBwcml2YXRlcmVsYXkuYXBwbGVpZC5jb20iLCJlbWFpbF92ZXJpZmllZCI6InRydWUiLCJpc19wcml2YXRlX2VtYWlsIjoidHJ1ZSIsImF1dGhfdGltZSI6MTYzNzE0OTMwOSwibm9uY2Vfc3VwcG9ydGVkIjp0cnVlfQ.ECAXcyw5Kpl2siUn5D2_aGe6QvfH_irfk3pPMYqgT0Uj7ggEV5n_QDF1BaMK05nJABY9P7RHLnLeP3EMD6GlAYHC3Cp-AVQOJdXD4CSakZYYNbPtvfZBzpH5HzpueYNRt-4UNdS8JOluJkE3ftMKoqRmXVgYeN-ZHuI8Y23saIXKeByuTZkVy6jGBWKUrWZcHKAV-6oyopY1Mr7KHwssi90jGfVwEypqvDN5mqj-OvU-IncbHpsmyc8cqeVzU1shq4mATFbOQR1CcaHhtEmWC3ZsavuRe4tVbuFCgQrPCNe50Nk-eKpEMZt0O_K4b5jxDnUcP6-vpLO_A1FXOttOfA"
-//        let googleIDToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImQ0ZTA2Y2ViMjJiMDFiZTU2YzIxM2M5ODU0MGFiNTYzYmZmNWE1OGMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI2MDkzNjIzMTg2NC0wN3EwaTVvazJqNTJybHYyZGl0Z3Rncm5wM25mZ3NmYy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImF1ZCI6IjYwOTM2MjMxODY0LTA3cTBpNW9rMmo1MnJsdjJkaXRndGdybnAzbmZnc2ZjLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTA2NjY3NzIzODI2MzM5MDc2MzQwIiwiaGQiOiJpbnZvem9uZS5jb20iLCJlbWFpbCI6InplZXNoYW4uYWhtZWRAaW52b3pvbmUuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJya3J2X2VEa2FBMWU4Qms5SDFDbmlBIiwibm9uY2UiOiJiSTN3ejlLSERCQm5ITE1WNHh5d3VQVzVoaEJnZlgyRDNDMU1CUUh1NG9nIiwibmFtZSI6IlplZXNoYW4gQWhtZWQiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUFUWEFKeUhpWEFVa011RGt6LVN3b1pNVVhDanByekpteVQzRjZKNlJ0eUw9czk2LWMiLCJnaXZlbl9uYW1lIjoiWmVlc2hhbiIsImZhbWlseV9uYW1lIjoiQWhtZWQiLCJsb2NhbGUiOiJlbiIsImlhdCI6MTYzNzY2OTczOCwiZXhwIjoxNjM3NjczMzM4fQ.Kj3jeujJxi20mEL0xzThXQsYf_FfJZdfhiRaYiplyMZbBxrF-D0Zsay3R3gmljuL68FIorEIC6f6Vw6rQPu24zBTiMdaLvfb4OLxw6_jA3rVwd5V0uhqP_o1n9DFJTdqE02TK2FXtHHP7jWCxu_sGwxjkEiV34qYQC8lTgVU4gePGsYFRaDBrjG0SMCy0TDpIuhTyx5w3uuTWnkq2zzWcLs2Ej1vGIsYYafLxpAHM7Lfmtv30OFRm1mdrdgRQvXQtU-JP85OYCerVhw6YUXPESzb-yp2EWbjbn-bz6orfB_hFyxDuf23JcUOpCBTCSnGm1Wb8jpquHZkWV5GCaMCKg"
+        let appleIDToken = "<your-apple-id-token>"
+
         let idToken = appleIDToken
         let socialLogin = Request.SocialLogin(userType: .patient,
                                               socialType: .apple,
@@ -131,7 +134,7 @@ extension OTFCloudClientAPITests {
         
         waitForExpectations(timeout: requestTimeoutInterval) { error in
             if let error = error {
-                print("Test failed Error: \(error.localizedDescription)")
+                OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
             }
         }
     }
@@ -141,14 +144,19 @@ extension OTFCloudClientAPITests {
         let promise = expectation(description: "Response should get into success block and it should not be nil.")
 
         realNetworkService.signup(request:
-                                    .init(email: testEmail,
+                                    .init(email: "pico@gmail.com",
                                           password: testPassword,
                                           first_name: "FirstTestName",
                                           last_name: "LastTestName",
                                           type: .patient,
                                           dob: "08-07-1997",
                                           gender: "male",
-                                          phoneNo: "(111) 111-1111")
+                                          phoneNo: "(111) 111-1111",
+                                          encryptedMasterKey: "testMasterKey",
+                                          publicKey: "testPublicKey",
+                                          encryptedDefaultStorageKey: "encryptedDefaultStorageKey",
+                                          encryptedConfidentialStorageKey: "encryptedDefaultStorageKey"
+                                         )
         ) { (result) in
             XCTAssertNotNil(result)
             switch result {
@@ -162,7 +170,7 @@ extension OTFCloudClientAPITests {
 
         waitForExpectations(timeout: requestTimeoutInterval) { error in
             if let error = error {
-                print("Test failed Error: \(error.localizedDescription)")
+                OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
             }
         }
     }
@@ -186,7 +194,7 @@ extension OTFCloudClientAPITests {
 
         waitForExpectations(timeout: requestTimeoutInterval) { error in
             if let error = error {
-                print("Test failed Error: \(error.localizedDescription)")
+                OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
             }
         }
     }
@@ -209,7 +217,7 @@ extension OTFCloudClientAPITests {
 
         waitForExpectations(timeout: requestTimeoutInterval) { error in
             if let error = error {
-                print("Test failed Error: \(error.localizedDescription)")
+                OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
             }
         }
     }
@@ -223,7 +231,7 @@ extension OTFCloudClientAPITests {
             case .success(let response):
                 XCTAssertNotNil(response)
             case .failure(let error):
-                print(error)
+                OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
                 XCTFail("🔥 \(error.error.message)")
             }
             promise.fulfill()
@@ -231,7 +239,7 @@ extension OTFCloudClientAPITests {
 
         waitForExpectations(timeout: requestTimeoutInterval) { error in
             if let error = error {
-                print("Test failed Error: \(error.localizedDescription)")
+                OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
             }
         }
     }
@@ -255,7 +263,7 @@ extension OTFCloudClientAPITests {
 
         waitForExpectations(timeout: requestTimeoutInterval) { error in
             if let error = error {
-                print("Test failed Error: \(error.localizedDescription)")
+                OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
             }
         }
     }
@@ -292,7 +300,7 @@ extension OTFCloudClientAPITests {
         }
         waitForExpectations(timeout: requestTimeoutInterval) { error in
             if let error = error {
-                print("Test failed Error: \(error.localizedDescription)")
+                OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
             }
         }
     }
@@ -313,8 +321,246 @@ extension OTFCloudClientAPITests {
 
         waitForExpectations(timeout: requestTimeoutInterval) { error in
             if let error = error {
-                print("Test failed Error: \(error.localizedDescription)")
+                OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
             }
         }
     }
+    
+    func testUpdateProfilePicture() {
+        let promise = expectation(description: "User Should logged out and should get the message 'Logged out.' from the server." )
+        
+        guard let filePath = Bundle(for: type(of: self)).path(forResource: "user", ofType: "png"),
+              let image = UIImage(contentsOfFile: filePath),
+              let data = image.pngData() else {
+            fatalError("Image not available")
+        }
+        let request = Request.UploadFile(userId: "88680df1d8eb2c334f379d45abcb08e6", location: .profile, uploadFile: data)
+        realNetworkService.updateProfilePicture(request: request) { result in
+            XCTAssertNotNil(result)
+            switch result {
+            case .success(let response):
+                XCTAssertNotNil(response)
+            case .failure(let error):
+                XCTFail("🔥 \(error.error.message)")
+            }
+            promise.fulfill()
+        }
+        
+        waitForExpectations(timeout: requestTimeoutInterval) { error in
+            if let error = error {
+                OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
+            }
+        }
+    }
+    
+    func testDownloadProfilePicture() {
+        let promise = expectation(description: "User Should logged out and should get the message 'Logged out.' from the server." )
+        
+        let request = Request.DownloadFile(attachmentID: "c93dd5d5-1571-47e8-b7f6-fd8218fb9819", meta: "true")
+        realNetworkService.downloadProfilePicture(request: request) { result in
+            XCTAssertNotNil(result)
+            switch result {
+            case .success(let response):
+                XCTAssertNotNil(response)
+                promise.fulfill()
+            case .failure(let error):
+                XCTFail("🔥 \(error.error.message)")
+            }
+        }
+        
+        waitForExpectations(timeout: requestTimeoutInterval) { error in
+            if let error = error {
+                OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
+            }
+        }
+    }
+    
+    func testUploadFile() {
+        
+        let promise = expectation(description: "User Should logged out and should get the message 'Logged out.' from the server." )
+
+        guard let filePath = Bundle(for: type(of: self)).url(forResource: "user", withExtension: "png"),
+                let data = try? Data(contentsOf: filePath) else {
+            fatalError("Image not available")
+        }
+        
+        let request = Request.UploadFiles(data: data, fileName: "user.png", type: .profile, meta: "true", encryptedFileKey: "",
+                                          hashFileKey: "")
+        
+        realNetworkService.uploadFile(request: request) { result in
+            XCTAssertNotNil(result)
+            switch result {
+            case .success(let response):
+                XCTAssertNotNil(response)
+                promise.fulfill()
+            case .failure(let error):
+                XCTFail("🔥 \(error)")
+            }
+            promise.fulfill()
+        }
+        
+        waitForExpectations(timeout: requestTimeoutInterval) { error in
+            if let error = error {
+                OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
+            }
+        }
+    }
+    
+    func testUploadConsentForm() {
+            
+            let promise = expectation(description: "User Should logged out and should get the message 'Logged out.' from the server." )
+
+            guard let filePath = Bundle(for: type(of: self)).url(forResource: "cheatsheet", withExtension: "pdf"),
+                    let data = try? Data(contentsOf: filePath) else {
+                fatalError("Image not available")
+            }
+            
+            let request = Request.UploadFiles(data: data, fileName: "cheatsheet.pdf", type: .consentForm, meta: "true", encryptedFileKey: "", hashFileKey: "")
+
+            let startTime = Date()
+            realNetworkService.uploadFile(request: request) { result in
+                XCTAssertNotNil(result)
+                switch result {
+                case .success(let response):
+                    let endTime = Date()
+                    let diffInSecs = endTime.timeIntervalSince(startTime)
+                    OTFLog("Time taken to upload the file: %{public}@", diffInSecs,
+                           category: LoggerCategory.networking.rawValue)
+                    XCTAssertNotNil(response)
+                    promise.fulfill()
+                case .failure(let error):
+                    XCTFail("🔥 \(error)")
+                }
+                promise.fulfill()
+            }
+            
+            waitForExpectations(timeout: requestTimeoutInterval) { error in
+                if let error = error {
+                    OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
+                }
+            }
+        }
+    
+    func testUploadConsentFormWithEncrypted() {
+            
+            let promise = expectation(description: "User Should logged out and should get the message 'Logged out.' from the server." )
+
+            guard let filePath = Bundle(for: type(of: self)).url(forResource: "cheatsheet", withExtension: "pdf"),
+                    let data = try? Data(contentsOf: filePath) else {
+                fatalError("Image not available")
+            }
+        
+        let swiftSodium = SwiftSodium()
+        let masterKey = swiftSodium.generateMasterKey(password: "123123123123", email: "azeem.invozone@gmail.com")
+        let bytesImage = swiftSodium.getArrayOfBytesFromData(FileData: data as NSData)
+        let defaultStorageKey = swiftSodium.generateDefaultStorageKey(masterKey: masterKey)
+      
+        let fileKeyPushStream = swiftSodium.getPushStream(secretKey: defaultStorageKey)!
+        let fileKey = swiftSodium.generateDeriveKey(key: defaultStorageKey)
+        let eFileKey = swiftSodium.encryptFile(pushStream: fileKeyPushStream, fileBytes: fileKey)
+        let _ = [fileKeyPushStream.header(), eFileKey].flatMap({ (element: [UInt8]) -> [UInt8] in
+            return element
+        })
+        
+        // encrypt file
+        let documentPushStream = swiftSodium.getPushStream(secretKey: fileKey)!
+        let fileencryption = swiftSodium.encryptFile(pushStream: documentPushStream, fileBytes: bytesImage)
+        let newFile = [documentPushStream.header(), fileencryption].flatMap({ (element: [UInt8]) -> [UInt8] in
+            return element
+        })
+        
+        let _ = swiftSodium.generateGenericHashWithKey(message: newFile, fileKey: fileKey)
+        let encryptedFileData = Data(newFile)
+        
+        let uuid = UUID().uuidString + ".pdf"
+
+            let request = Request.UploadFiles(data: encryptedFileData, fileName: uuid, type: .consentForm, meta: "true", encryptedFileKey: "encryptedFileKeyHex", hashFileKey: "hashKeyFileHex")
+
+            let startTime = Date()
+            realNetworkService.uploadFile(request: request) { result in
+                XCTAssertNotNil(result)
+                switch result {
+                case .success(let response):
+                    let endTime = Date()
+                    let diffInSecs = endTime.timeIntervalSince(startTime)
+                    OTFLog("Time taken to upload the file: %{public}@", diffInSecs,
+                           category: LoggerCategory.networking.rawValue)
+                    XCTAssertNotNil(response)
+                    promise.fulfill()
+                case .failure(let error):
+                    XCTFail("🔥 \(error)")
+                }
+                promise.fulfill()
+            }
+            
+            waitForExpectations(timeout: requestTimeoutInterval) { error in
+                if let error = error {
+                    OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
+                }
+            }
+        }
+    
+    // MARK: - Delete File
+    func testDeleteFile() {
+        let promise = expectation(description: "Should got failed for invalid code on reset password.")
+        let request = Request.FileAttachmentId(attachmentID: "6faac05a-5a2e-4a0a-8bce-6fcede643675")
+        realNetworkService.deleteFile(request: request) { (result) in
+            XCTAssertNotNil(result)
+            switch result {
+            case .success(let response):
+                XCTAssertNotNil(response)
+            case .failure(let error):
+                XCTAssertNotNil(error)
+            }
+            promise.fulfill()
+        }
+        waitForExpectations(timeout: requestTimeoutInterval) { error in
+            if let error = error {
+                OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
+            }
+        }
+    }
+    
+    // MARK: - Get FileInfo
+    func testGetFileInfo() {
+        let promise = expectation(description: "Should got failed for invalid code on reset password.")
+        let request = Request.FileAttachmentId(attachmentID: "6faac05a-5a2e-4a0a-8bce-6fcede643675")
+        realNetworkService.getFileInfo(request: request) { (result) in
+            XCTAssertNotNil(result)
+            switch result {
+            case .success(let response):
+                XCTAssertNotNil(response)
+            case .failure(let error):
+                XCTAssertNotNil(error)
+            }
+            promise.fulfill()
+        }
+        waitForExpectations(timeout: requestTimeoutInterval) { error in
+            if let error = error {
+                OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
+            }
+        }
+    }
+    
+    // MARK: - File Rename
+    func testFileRename() {
+        let promise = expectation(description: "Should got failed for invalid code on reset password.")
+        let request = Request.FileRename(attachmentID: "c93dd5d5-1571-47e8-b7f6-fd8218fb9819", name: "newName.png")
+        realNetworkService.getFileInfo(request: request) { (result) in
+            XCTAssertNotNil(result)
+            switch result {
+            case .success(let response):
+                XCTAssertNotNil(response)
+            case .failure(let error):
+                XCTAssertNotNil(error)
+            }
+            promise.fulfill()
+        }
+        waitForExpectations(timeout: requestTimeoutInterval) { error in
+            if let error = error {
+                OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
+            }
+        }
+    }
+    
 }

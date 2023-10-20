@@ -53,7 +53,14 @@ enum Endpoint: EndpointImplementable {
          resetPassword,
          logout,
          sseSubscribe,
-         sseChanges
+         sseChanges,
+         fileUpload(userId: String, type: Request.AttachmentLocation),
+         getUploadFile,
+         uploadFile,
+         deleteFile,
+         getFileInfo,
+         getFileRevision,
+         fileRename
     
     var path: String {
         switch self {
@@ -79,6 +86,20 @@ enum Endpoint: EndpointImplementable {
             return "db/_subscribe"
         case .sseChanges:
             return "db/_changes"
+        case .fileUpload(let userId, _):
+            return "auth/file-upload/\(userId)"
+        case .getUploadFile:
+            return "auth/retrieve-file"
+        case .uploadFile:
+            return "auth/file-upload"
+        case .deleteFile:
+            return "auth/delete-file"
+        case .getFileInfo:
+            return "auth/file-info"
+        case .getFileRevision:
+            return "auth/file-revision"
+        case .fileRename:
+            return "auth/file-rename"
         }
     }
     

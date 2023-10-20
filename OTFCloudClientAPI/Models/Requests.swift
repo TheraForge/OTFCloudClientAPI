@@ -35,6 +35,14 @@ OF SUCH DAMAGE.
 import Foundation
 
 public enum Request {
+    
+    public enum AttachmentLocation: String, Codable {
+        case profile = "Profile"
+        case documents = "Documents"
+        case consentForm = "ConsentForm"
+        case settings = "Settings"
+    }
+    
     public struct Login: Codable {
         public init(email: String, password: String) {
             self.email = email
@@ -54,7 +62,7 @@ public enum Request {
     }
 
     public struct SignUp: Codable {
-        public init(email: String, password: String, first_name: String, last_name: String, type: UserType, dob: String, gender: String, phoneNo: String) {
+        public init(email: String, password: String, first_name: String, last_name: String, type: UserType, dob: String, gender: String, phoneNo: String, encryptedMasterKey: String, publicKey: String, encryptedDefaultStorageKey: String,encryptedConfidentialStorageKey: String) {
             self.email = email
             self.password = password
             self.first_name = first_name
@@ -63,6 +71,10 @@ public enum Request {
             self.dob = dob
             self.gender = gender
             self.phoneNo = phoneNo
+            self.encryptedMasterKey = encryptedMasterKey
+            self.publicKey = publicKey
+            self.encryptedConfidentialStorageKey = encryptedConfidentialStorageKey
+            self.encryptedDefaultStorageKey = encryptedDefaultStorageKey
         }
         
         public let email: String
@@ -73,6 +85,10 @@ public enum Request {
         public let dob: String
         public let gender: String
         public let phoneNo: String
+        public let encryptedMasterKey: String
+        public let publicKey: String
+        public let encryptedDefaultStorageKey: String
+        public let encryptedConfidentialStorageKey: String
     }
     
     public struct SocialLogin: Codable {
@@ -175,5 +191,65 @@ public enum Request {
         }
 
         public let db: String
+    }
+    
+    public struct UploadFile: Codable {
+        
+        public init(userId: String, location: AttachmentLocation, uploadFile: Data) {
+            self.userId = userId
+            self.location = location
+            self.uploadFile = uploadFile
+        }
+        
+        public let userId: String
+        public let location: AttachmentLocation
+        public let uploadFile: Data
+    }
+    
+    public struct DownloadFile: Codable {
+        
+        public init(attachmentID: String, meta: String) {
+            self.attachmentID = attachmentID
+            self.meta = meta
+        }
+        
+        public let attachmentID: String
+        public let meta: String
+    }
+    
+    public struct UploadFiles: Codable {
+        public init(data: Data, fileName: String, type: AttachmentLocation, meta: String, encryptedFileKey : String?,hashFileKey : String) {
+            self.data = data
+            self.fileName = fileName
+            self.type = type
+            self.meta = meta
+            self.encryptedFileKey = encryptedFileKey ?? ""
+            self.hashFileKey = hashFileKey
+        }
+
+        public let data: Data
+        public let fileName: String
+        public let type: AttachmentLocation
+        public let meta: String
+        public let encryptedFileKey : String?
+        public let hashFileKey : String
+    }
+    
+    public struct FileAttachmentId: Codable {
+        public init(attachmentID: String) {
+            self.attachmentID = attachmentID
+        }
+
+        public let attachmentID: String
+    }
+    
+    public struct FileRename: Codable {
+        public init(attachmentID: String, name: String) {
+            self.attachmentID = attachmentID
+            self.name = name
+        }
+
+        public let attachmentID: String
+        public let name: String
     }
 }

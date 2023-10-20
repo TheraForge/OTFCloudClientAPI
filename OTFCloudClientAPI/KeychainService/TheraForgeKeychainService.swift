@@ -33,6 +33,7 @@ OF SUCH DAMAGE.
  */
 
 import KeychainAccess
+import OTFUtilities
 
 public enum KeyChainKey: String {
     case auth, vendorID, user
@@ -96,7 +97,7 @@ public class TheraForgeKeychainService: KeychainServiceProtocol {
         do {
             try keychain.removeAll()
         } catch {
-            print(error)
+            OTFError("Error in reset keychain: %{public}@,", error.localizedDescription)
         }
     }
 }

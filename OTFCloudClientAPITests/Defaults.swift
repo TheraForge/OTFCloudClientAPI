@@ -35,11 +35,11 @@ OF SUCH DAMAGE.
 import Foundation
 
 struct Defaults {
-    static let username = "username@yourorg.com" // Update with a registered email address for the tests
-    static let password = "your_password" // Update the associated password for the above account
-    static let apiURL = URL(string: "https://theraforge.org/api")
+    static let username = "<your-user-name>"
+    static let password = "<your-password>"
+    static let apiURL = URL(string: "<your-api-url>")
     
     // swiftlint:disable line_length
-    static let APIKEY = "Update the API KEY you have received for using TheraForge" // Make sure there are no spaces 
-    static let requestTimeoutInterval: TimeInterval = 60
+    static let APIKEY = "<your-api-key>"
+    static let requestTimeoutInterval: TimeInterval = 400
 }

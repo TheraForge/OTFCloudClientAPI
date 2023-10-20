@@ -57,20 +57,20 @@ public enum Response {
         public let data: User
         public let accessToken: Auth
     }
-
+    
     public struct LogOut: Codable {
         public init(message: String) {
             self.message = message
         }
-
+        
         public let message: String
     }
-
+    
     public struct ChangePassword: Codable {
         public init(message: String) {
             self.message = message
         }
-
+        
         public let message: String
     }
     
@@ -78,18 +78,18 @@ public enum Response {
         public init(message: String) {
             self.message = message
         }
-
+        
         public let message: String
     }
-
+    
     public struct ForgotPassword: Codable {
         public init(message: String) {
             self.message = message
         }
-
+        
         public let message: String
     }
-
+    
     public struct ChangeSeq: Codable {
         public init(seq: String?, id: String?, deleted: Bool?, changes: [Response.Change]?) {
             self.seq = seq
@@ -97,35 +97,35 @@ public enum Response {
             self.deleted = deleted
             self.changes = changes
         }
-
+        
         public let seq: String?
         public let id: String?
         public let deleted: Bool?
         public let changes: [Change]?
     }
-
+    
     public struct Change: Codable {
         public init(rev: String) {
             self.rev = rev
         }
-
+        
         public let rev: String
     }
-
+    
     public struct Changes: Codable {
         public init(results: [Response.ChangeSeq], lastSeq: String?, pending: Int) {
             self.results = results
             self.lastSeq = lastSeq
             self.pending = pending
         }
-
+        
         public let results: [ChangeSeq]
         public let lastSeq: String?
         public let pending: Int
     }
-
+    
     public struct User: Codable {
-        public init(id: String, email: String, firstName: String, lastName: String, type: UserType, gender: GenderType, dob: String) {
+        public init(id: String, email: String, firstName: String, lastName: String, type: UserType, gender: GenderType, dob: String, encryptedMasterKey: String, encryptedConfidentialStorageKey: String, encryptedDefaultStorageKey: String) {
             self.id = id
             self.email = email
             self.firstName = firstName
@@ -133,6 +133,10 @@ public enum Response {
             self.type = type
             self.gender = gender
             self.dob = dob
+            self.encryptedMasterKey = encryptedMasterKey
+            self.encryptedDefaultStorageKey = encryptedDefaultStorageKey
+            self.encryptedConfidentialStorageKey = encryptedConfidentialStorageKey
+//            self.publicKey = publicKey
         }
         
         public let id: String
@@ -142,6 +146,10 @@ public enum Response {
         public let gender: GenderType?
         public let dob: String?
         public let type: UserType
+        public let encryptedMasterKey: String
+        public let encryptedConfidentialStorageKey: String
+        public let encryptedDefaultStorageKey: String
+//        public let publicKey: String
         
         public var dateOfBirth: Date? {
             guard let dob = dob else { return nil }
@@ -149,5 +157,137 @@ public enum Response {
             formatter.dateFormat = "dd-mm-yyyy"
             return formatter.date(from: dob)
         }
+    }
+    
+    public struct UploadFile: Codable {
+        public init(error: Bool, message: String, data: Response.UploadFile.AttachmentDetails) {
+            self.error = error
+            self.message = message
+            self.data = data
+        }
+        
+        public let error: Bool
+        public let message: String
+        public let data: AttachmentDetails
+        
+        public struct AttachmentDetails: Codable {
+            public init(attachmentType: Request.AttachmentLocation, attachmentUrl: String) {
+                self.attachmentType = attachmentType
+                self.attachmentUrl = attachmentUrl
+            }
+            
+            public let attachmentType: Request.AttachmentLocation
+            public let attachmentUrl: String
+        }
+    }
+    
+    public struct DownloadFile: Codable {
+        public init(error: Bool, message: String, data: Response.DownloadFile.AttachmentDetails) {
+            self.error = error
+            self.message = message
+            self.data = data
+        }
+        
+        public let error: Bool
+        public let message: String
+        public let data: AttachmentDetails
+        
+        public struct AttachmentDetails: Codable {
+            public init(attachmentUrl: String) {
+                self.attachmentUrl = attachmentUrl
+            }
+            
+            public let attachmentUrl: String
+        }
+    }
+    
+    public struct FileResponse: Codable {
+        public let metadata: Metadata
+        public let data: Data
+        
+        public init(metadata: Response.Metadata, data: Data) {
+            self.metadata = metadata
+            self.data = data
+        }
+    }
+
+    public struct Metadata: Codable {
+        public let contentType, revpos, hashFileKey, encryptedFileKey, location, attachmentID, fileName, owner: String
+        public let attrev, length: Double
+        public let stub: Bool
+        
+        public init(contentType: String,
+                    revpos: String,
+                    hashFileKey: String,
+                    encryptedFileKey: String,
+                    location: String,
+                    fileName: String,
+                    owner: String,
+                    attrev: Double,
+                    length: Double,
+                    stub: Bool,
+                    attachmentID: String) {
+            self.contentType = contentType
+            self.revpos = revpos
+            self.hashFileKey = hashFileKey
+            self.encryptedFileKey = encryptedFileKey
+            self.location = location
+            self.fileName = fileName
+            self.owner = owner
+            self.attrev = attrev
+            self.length = length
+            self.stub = stub
+            self.attachmentID = attachmentID
+        }
+    }
+    
+    public struct DeleteFile: Codable {
+        public init(error: Bool, message: String, statusCode: Int) {
+            self.error = error
+            self.message = message
+            self.statusCode = statusCode
+        }
+        
+        public let error: Bool
+        public let message: String
+        public let statusCode: Int
+    }
+    
+    public struct FileInfo: Codable {
+        public init(error: Bool, message: String, statusCode: Int, data: Response.Metadata) {
+            self.error = error
+            self.message = message
+            self.statusCode = statusCode
+            self.data = data
+        }
+        
+        public let error: Bool
+        public let message: String
+        public let statusCode: Int
+        public let data: Metadata
+    }
+    
+    public struct GetRevision: Codable {
+        public init(error: Bool, message: String, statusCode: Int, data: Response.RevisionData) {
+            self.error = error
+            self.message = message
+            self.statusCode = statusCode
+            self.data = data
+        }
+        
+        public let error: Bool
+        public let message: String
+        public let statusCode: Int
+        public let data: RevisionData
+    }
+    
+    public struct RevisionData: Codable {
+        public init(revpos: String, attrev: Int) {
+            self.revpos = revpos
+            self.attrev = attrev
+        }
+        
+        public let revpos: String
+        public let attrev: Int
     }
 }

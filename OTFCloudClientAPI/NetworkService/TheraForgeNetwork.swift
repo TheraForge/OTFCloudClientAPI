@@ -61,10 +61,24 @@ public protocol NetworkServiceProtocol {
     func refreshToken(completionHandler: @escaping (_ result: Result<Response.Login, ForgeError>) -> Void)
 
     func resetPassword(request: Request.ResetPassword, completionHandler: @escaping (_ result: Result<Response.ChangePassword, ForgeError>) -> Void)
+    
+    func updateProfilePicture(request: Request.UploadFile, completionHandler: @escaping (Result<Response.UploadFile, ForgeError>) -> Void)
+    
+    func downloadProfilePicture(request: Request.DownloadFile, completionHandler: @escaping (Result<Response.FileResponse, ForgeError>) -> Void)
+    
+    func uploadFile(request: Request.UploadFiles, completionHandler: @escaping (Result<Response.FileResponse, ForgeError>) -> Void)
+    
+    func deleteFile(request: Request.FileAttachmentId, completionHandler: @escaping (Result<Response.DeleteFile, ForgeError>) -> Void)
+    
+    func getFileInfo(request: Request.FileAttachmentId, completionHandler: @escaping (Result<Response.FileInfo, ForgeError>) -> Void)
+    
+    func getRevision(request: Request.FileAttachmentId, completionHandler: @escaping (Result<Response.GetRevision, ForgeError>) -> Void)
+    
+    func getFileInfo(request: Request.FileRename, completionHandler: @escaping (Result<Response.FileInfo, ForgeError>) -> Void)
 }
 
 public class TheraForgeNetwork: NSObject, NetworkServiceProtocol, CDTNSURLSessionConfigurationDelegate {
-
+    
     public static let shared: TheraForgeNetwork = TheraForgeNetwork()
 
     private var network = NetworkingLayer.shared
@@ -156,6 +170,34 @@ public class TheraForgeNetwork: NSObject, NetworkServiceProtocol, CDTNSURLSessio
 
     public func resetPassword(request: Request.ResetPassword, completionHandler: @escaping (Result<Response.ChangePassword, ForgeError>) -> Void) {
         network.resetPassword(request: request, completionHandler: completionHandler)
+    }
+    
+    public func updateProfilePicture(request: Request.UploadFile, completionHandler: @escaping (Result<Response.UploadFile, ForgeError>) -> Void) {
+        network.updateProfilePicture(request: request, completionHandler: completionHandler)
+    }
+    
+    public func downloadProfilePicture(request: Request.DownloadFile, completionHandler: @escaping (Result<Response.FileResponse, ForgeError>) -> Void) {
+        network.downloadProfilePicture(request: request, completionHandler: completionHandler)
+    }
+    
+    public func uploadFile(request: Request.UploadFiles, completionHandler: @escaping (Result<Response.FileResponse, ForgeError>) -> Void) {
+        network.uploadFile(request: request, completionHandler: completionHandler)
+    }
+    
+    public func deleteFile(request: Request.FileAttachmentId, completionHandler: @escaping (Result<Response.DeleteFile, ForgeError>) -> Void) {
+        network.deleteFile(request: request, completionHandler: completionHandler)
+    }
+    
+    public func getFileInfo(request: Request.FileAttachmentId, completionHandler: @escaping (Result<Response.FileInfo, ForgeError>) -> Void) {
+        network.getFileInfo(request: request, completionHandler: completionHandler)
+    }
+    
+    public func getRevision(request: Request.FileAttachmentId, completionHandler: @escaping (Result<Response.GetRevision, ForgeError>) -> Void) {
+        network.getRevision(request: request, completionHandler: completionHandler)
+    }
+    
+    public func getFileInfo(request: Request.FileRename, completionHandler: @escaping (Result<Response.FileInfo, ForgeError>) -> Void) {
+        network.getFileInfo(request: request, completionHandler: completionHandler)
     }
 
     // MARK: - CDTNSURLSessionConfigurationDelegate

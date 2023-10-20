@@ -3,7 +3,7 @@
 ## version: 1.0
 ## updated: 23.02.2020
 ## MacOS
-.DS_Store
+.DS_Store*
 ## Build generated
 build/
 DerivedData/

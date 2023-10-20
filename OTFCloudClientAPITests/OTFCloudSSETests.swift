@@ -33,6 +33,7 @@ OF SUCH DAMAGE.
  */
 
 import XCTest
+import OTFUtilities
 @testable import OTFCloudClientAPI
 
 extension XCTestCase {
@@ -58,17 +59,17 @@ class OTFCloudSSETests: XCTestCase {
         let shared = TheraForgeNetwork.shared
 
         shared.eventSourceOnOpen = {
-            print("Event source open...")
+            OTFLog("Event source open...")
         }
 
         login(shared) { result in
             switch result {
             case .success(let response):
-                print("User logged in....")
+                OTFLog("User logged in....")
                 let auth = response.accessToken
                 shared.observeOnServerSentEvents(auth: auth)
                 shared.onReceivedMessage = { event in
-                    print(event)
+                    OTFLog("Event %{public}@", event.type.rawValue)
                     expect.fulfill()
                 }
             case .failure(let error):

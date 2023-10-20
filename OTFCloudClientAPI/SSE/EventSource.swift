@@ -33,6 +33,7 @@ OF SUCH DAMAGE.
  */
 
 import Foundation
+import OTFUtilities
 
 public enum EventSourceState {
     case connecting
@@ -136,13 +137,13 @@ public class EventSource: NSObject, EventSourceProtocol, URLSessionDataDelegate 
         let configuration = sessionConfiguration(lastEventId: lastEventId)
         urlSession = URLSession(configuration: configuration, delegate: self, delegateQueue: operationQueue)
         urlSession?.dataTask(with: url).resume()
-        print("SSE Connecting.....")
+        OTFLog("SSE Connecting.....")
     }
 
     public func disconnect() {
         readyState = .closed
         urlSession?.invalidateAndCancel()
-        print("SSE disconnecting.....")
+        OTFLog("SSE disconnecting.....")
     }
 
     public func onOpen(_ onOpenCallback: @escaping (() -> Void)) {
@@ -186,7 +187,7 @@ public class EventSource: NSObject, EventSourceProtocol, URLSessionDataDelegate 
             }
             
         } catch {
-            print("Parsing error: \(error)")
+            OTFError("Parsing error: %{public}@,", error.localizedDescription)
         }
     }
 
