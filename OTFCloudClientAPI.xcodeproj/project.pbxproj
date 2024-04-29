@@ -3,11 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		124C70460247DC21CD66C6BC /* Pods_OTFCloudClientAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D062F31AF5B073F569A80EE1 /* Pods_OTFCloudClientAPI.framework */; };
 		14307226264CEAB000E2AA75 /* OTFCloudSSETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14307225264CEAB000E2AA75 /* OTFCloudSSETests.swift */; };
+		147D7FA9776A8829344DF41B /* Pods_OTFCloudClientAPI_OTFCloudClientAPITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F41BFCB1AEB93A98F1557CD /* Pods_OTFCloudClientAPI_OTFCloudClientAPITests.framework */; };
 		14A37FA225C577FE007F00EF /* OTFCloudClientAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14A37F9825C577FE007F00EF /* OTFCloudClientAPI.framework */; };
 		14A37FA725C577FE007F00EF /* OTFClientSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A37FA625C577FE007F00EF /* OTFClientSDKTests.swift */; };
 		14A37FA925C577FE007F00EF /* OTFCloudClientAPI.h in Headers */ = {isa = PBXBuildFile; fileRef = 14A37F9B25C577FE007F00EF /* OTFCloudClientAPI.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -28,12 +30,27 @@
 		14F90480265237FA0022EA31 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14F9047E265237FA0022EA31 /* Main.storyboard */; };
 		14F90482265237FB0022EA31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14F90481265237FB0022EA31 /* Assets.xcassets */; };
 		14F90485265237FB0022EA31 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14F90483265237FB0022EA31 /* LaunchScreen.storyboard */; };
-		5335863CDC31084946AFE718 /* Pods_OTFCloudClientAPI_OTFCloudClientAPITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D4C6FDC8C65663ED7B274B8 /* Pods_OTFCloudClientAPI_OTFCloudClientAPITests.framework */; };
+		5715905EFABC4F9F5B78E8C1 /* Pods_OTFCloudClientAPIWatchOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91BFD9AB13F59D7C85F611FC /* Pods_OTFCloudClientAPIWatchOS.framework */; };
 		844270A4272B1932000F7D78 /* Encodable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844270A3272B1932000F7D78 /* Encodable+Extensions.swift */; };
 		844270A6272B20BB000F7D78 /* Dictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844270A5272B20BB000F7D78 /* Dictionary+Extensions.swift */; };
 		84A5E324272159EE0049C8C0 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A5E323272159EE0049C8C0 /* Defaults.swift */; };
+		84AA32892B4415A900DD9BB1 /* OTFCloudClientAPI.h in Headers */ = {isa = PBXBuildFile; fileRef = 14A37F9B25C577FE007F00EF /* OTFCloudClientAPI.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		84AA328B2B4415A900DD9BB1 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A37FD925C57F75007F00EF /* Endpoint.swift */; };
+		84AA328C2B4415A900DD9BB1 /* ForgeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A37FC025C57A29007F00EF /* ForgeError.swift */; };
+		84AA328D2B4415A900DD9BB1 /* Data+Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = A80B7DC32A01007D009730C5 /* Data+Extention.swift */; };
+		84AA328E2B4415A900DD9BB1 /* Responses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A37FBC25C578A7007F00EF /* Responses.swift */; };
+		84AA328F2B4415A900DD9BB1 /* NetworkingLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A37FCB25C57B64007F00EF /* NetworkingLayer.swift */; };
+		84AA32902B4415A900DD9BB1 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C7107425C6D9D30059551D /* Event.swift */; };
+		84AA32912B4415A900DD9BB1 /* Encodable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844270A3272B1932000F7D78 /* Encodable+Extensions.swift */; };
+		84AA32922B4415A900DD9BB1 /* TheraForgeNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A37FB425C57852007F00EF /* TheraForgeNetwork.swift */; };
+		84AA32932B4415A900DD9BB1 /* TheraForgeKeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A37FD025C57D32007F00EF /* TheraForgeKeychainService.swift */; };
+		84AA32942B4415A900DD9BB1 /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A37FB825C57885007F00EF /* Requests.swift */; };
+		84AA32952B4415A900DD9BB1 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A37FDD25C57F8A007F00EF /* Auth.swift */; };
+		84AA32962B4415A900DD9BB1 /* Dictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844270A5272B20BB000F7D78 /* Dictionary+Extensions.swift */; };
+		84AA32972B4415A900DD9BB1 /* EventSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C7107525C6D9D30059551D /* EventSource.swift */; };
+		84AA32982B4415A900DD9BB1 /* URLSession+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A37FE225C57FD6007F00EF /* URLSession+Extensions.swift */; };
 		84D31D9F29B8B4C00082E4F9 /* user.png in Resources */ = {isa = PBXBuildFile; fileRef = 84D31D9E29B8B4BF0082E4F9 /* user.png */; };
-		9A3BF99D8F165C1132D2C5ED /* Pods_OTFCloudClientAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07D9BA958215D6475127F9F9 /* Pods_OTFCloudClientAPI.framework */; };
+		9A3BF99D8F165C1132D2C5ED /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		A80B7DC42A01007D009730C5 /* Data+Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = A80B7DC32A01007D009730C5 /* Data+Extention.swift */; };
 		A888444B2A711B3A00261492 /* cheatsheet.pdf in Resources */ = {isa = PBXBuildFile; fileRef = A888444A2A711B3A00261492 /* cheatsheet.pdf */; };
 /* End PBXBuildFile section */
@@ -56,7 +73,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		07D9BA958215D6475127F9F9 /* Pods_OTFCloudClientAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OTFCloudClientAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		14307225264CEAB000E2AA75 /* OTFCloudSSETests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTFCloudSSETests.swift; sourceTree = "<group>"; };
 		14A37F9825C577FE007F00EF /* OTFCloudClientAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OTFCloudClientAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		14A37F9B25C577FE007F00EF /* OTFCloudClientAPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OTFCloudClientAPI.h; sourceTree = "<group>"; };
@@ -83,17 +99,23 @@
 		14F90481265237FB0022EA31 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		14F90484265237FB0022EA31 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		14F90486265237FB0022EA31 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1D4C6FDC8C65663ED7B274B8 /* Pods_OTFCloudClientAPI_OTFCloudClientAPITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OTFCloudClientAPI_OTFCloudClientAPITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		2267DD976DAE2C8CEA7E5423 /* Pods-OTFCloudClientAPI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OTFCloudClientAPI.debug.xcconfig"; path = "Target Support Files/Pods-OTFCloudClientAPI/Pods-OTFCloudClientAPI.debug.xcconfig"; sourceTree = "<group>"; };
-		6F5589288BB8BFCA143670CE /* Pods-OTFCloudClientAPI-OTFCloudClientAPITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OTFCloudClientAPI-OTFCloudClientAPITests.debug.xcconfig"; path = "Target Support Files/Pods-OTFCloudClientAPI-OTFCloudClientAPITests/Pods-OTFCloudClientAPI-OTFCloudClientAPITests.debug.xcconfig"; sourceTree = "<group>"; };
-		81FCB310F2813CB18333CD11 /* Pods-OTFCloudClientAPI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OTFCloudClientAPI.release.xcconfig"; path = "Target Support Files/Pods-OTFCloudClientAPI/Pods-OTFCloudClientAPI.release.xcconfig"; sourceTree = "<group>"; };
+		2F41BFCB1AEB93A98F1557CD /* Pods_OTFCloudClientAPI_OTFCloudClientAPITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OTFCloudClientAPI_OTFCloudClientAPITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3070E53FEA6FD501FFF7FC2C /* Pods-OTFCloudClientAPI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OTFCloudClientAPI.debug.xcconfig"; path = "Target Support Files/Pods-OTFCloudClientAPI/Pods-OTFCloudClientAPI.debug.xcconfig"; sourceTree = "<group>"; };
+		551E531C768F942730BEBBC5 /* Pods-OTFCloudClientAPIWatchOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OTFCloudClientAPIWatchOS.debug.xcconfig"; path = "Target Support Files/Pods-OTFCloudClientAPIWatchOS/Pods-OTFCloudClientAPIWatchOS.debug.xcconfig"; sourceTree = "<group>"; };
 		844270A3272B1932000F7D78 /* Encodable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Extensions.swift"; sourceTree = "<group>"; };
 		844270A5272B20BB000F7D78 /* Dictionary+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extensions.swift"; sourceTree = "<group>"; };
 		84A5E323272159EE0049C8C0 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
+		84AA32A02B4415A900DD9BB1 /* OTFCloudClientAPIWatchOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OTFCloudClientAPIWatchOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		84AA32A12B4415A900DD9BB1 /* OTFCloudClientAPIWatchOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "OTFCloudClientAPIWatchOS-Info.plist"; path = "/Users/admin/Documents/HippocratesTech/OTFCloudClientAPI/OTFCloudClientAPIWatchOS-Info.plist"; sourceTree = "<absolute>"; };
 		84D31D9E29B8B4BF0082E4F9 /* user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user.png; sourceTree = "<group>"; };
+		91BFD9AB13F59D7C85F611FC /* Pods_OTFCloudClientAPIWatchOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OTFCloudClientAPIWatchOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		942B2F1663315986CF2AEDF7 /* Pods-OTFCloudClientAPI-OTFCloudClientAPITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OTFCloudClientAPI-OTFCloudClientAPITests.debug.xcconfig"; path = "Target Support Files/Pods-OTFCloudClientAPI-OTFCloudClientAPITests/Pods-OTFCloudClientAPI-OTFCloudClientAPITests.debug.xcconfig"; sourceTree = "<group>"; };
+		9F69F700A5B7CDC2B4842F2F /* Pods-OTFCloudClientAPI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OTFCloudClientAPI.release.xcconfig"; path = "Target Support Files/Pods-OTFCloudClientAPI/Pods-OTFCloudClientAPI.release.xcconfig"; sourceTree = "<group>"; };
+		A55333688649512B82CC84E7 /* Pods-OTFCloudClientAPIWatchOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OTFCloudClientAPIWatchOS.release.xcconfig"; path = "Target Support Files/Pods-OTFCloudClientAPIWatchOS/Pods-OTFCloudClientAPIWatchOS.release.xcconfig"; sourceTree = "<group>"; };
 		A80B7DC32A01007D009730C5 /* Data+Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extention.swift"; sourceTree = "<group>"; };
 		A888444A2A711B3A00261492 /* cheatsheet.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = cheatsheet.pdf; sourceTree = "<group>"; };
-		C3790D1B590F3709A55B8C13 /* Pods-OTFCloudClientAPI-OTFCloudClientAPITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OTFCloudClientAPI-OTFCloudClientAPITests.release.xcconfig"; path = "Target Support Files/Pods-OTFCloudClientAPI-OTFCloudClientAPITests/Pods-OTFCloudClientAPI-OTFCloudClientAPITests.release.xcconfig"; sourceTree = "<group>"; };
+		C01F2E044CADDB2F78AA8E96 /* Pods-OTFCloudClientAPI-OTFCloudClientAPITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OTFCloudClientAPI-OTFCloudClientAPITests.release.xcconfig"; path = "Target Support Files/Pods-OTFCloudClientAPI-OTFCloudClientAPITests/Pods-OTFCloudClientAPI-OTFCloudClientAPITests.release.xcconfig"; sourceTree = "<group>"; };
+		D062F31AF5B073F569A80EE1 /* Pods_OTFCloudClientAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OTFCloudClientAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,7 +123,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A3BF99D8F165C1132D2C5ED /* Pods_OTFCloudClientAPI.framework in Frameworks */,
+				9A3BF99D8F165C1132D2C5ED /* BuildFile in Frameworks */,
+				124C70460247DC21CD66C6BC /* Pods_OTFCloudClientAPI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,7 +133,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				14A37FA225C577FE007F00EF /* OTFCloudClientAPI.framework in Frameworks */,
-				5335863CDC31084946AFE718 /* Pods_OTFCloudClientAPI_OTFCloudClientAPITests.framework in Frameworks */,
+				147D7FA9776A8829344DF41B /* Pods_OTFCloudClientAPI_OTFCloudClientAPITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,6 +141,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		84AA32992B4415A900DD9BB1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5715905EFABC4F9F5B78E8C1 /* Pods_OTFCloudClientAPIWatchOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,7 +163,8 @@
 				14F90477265237FA0022EA31 /* OTFCloudClientAPIApp */,
 				14A37F9925C577FE007F00EF /* Products */,
 				76EBED8EA7C2EE9C88AB03DF /* Pods */,
-				534FFE3C67E9CD58642DB4C5 /* Frameworks */,
+				84AA32A12B4415A900DD9BB1 /* OTFCloudClientAPIWatchOS-Info.plist */,
+				65484CF32F8F2E8FAF69A530 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -142,6 +174,7 @@
 				14A37F9825C577FE007F00EF /* OTFCloudClientAPI.framework */,
 				14A37FA125C577FE007F00EF /* OTFCloudClientAPITests.xctest */,
 				14F90476265237FA0022EA31 /* OTFCloudClientAPIApp.app */,
+				84AA32A02B4415A900DD9BB1 /* OTFCloudClientAPIWatchOS.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -236,11 +269,12 @@
 			path = OTFCloudClientAPIApp;
 			sourceTree = "<group>";
 		};
-		534FFE3C67E9CD58642DB4C5 /* Frameworks */ = {
+		65484CF32F8F2E8FAF69A530 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				07D9BA958215D6475127F9F9 /* Pods_OTFCloudClientAPI.framework */,
-				1D4C6FDC8C65663ED7B274B8 /* Pods_OTFCloudClientAPI_OTFCloudClientAPITests.framework */,
+				D062F31AF5B073F569A80EE1 /* Pods_OTFCloudClientAPI.framework */,
+				2F41BFCB1AEB93A98F1557CD /* Pods_OTFCloudClientAPI_OTFCloudClientAPITests.framework */,
+				91BFD9AB13F59D7C85F611FC /* Pods_OTFCloudClientAPIWatchOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -248,10 +282,12 @@
 		76EBED8EA7C2EE9C88AB03DF /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				2267DD976DAE2C8CEA7E5423 /* Pods-OTFCloudClientAPI.debug.xcconfig */,
-				81FCB310F2813CB18333CD11 /* Pods-OTFCloudClientAPI.release.xcconfig */,
-				6F5589288BB8BFCA143670CE /* Pods-OTFCloudClientAPI-OTFCloudClientAPITests.debug.xcconfig */,
-				C3790D1B590F3709A55B8C13 /* Pods-OTFCloudClientAPI-OTFCloudClientAPITests.release.xcconfig */,
+				3070E53FEA6FD501FFF7FC2C /* Pods-OTFCloudClientAPI.debug.xcconfig */,
+				9F69F700A5B7CDC2B4842F2F /* Pods-OTFCloudClientAPI.release.xcconfig */,
+				942B2F1663315986CF2AEDF7 /* Pods-OTFCloudClientAPI-OTFCloudClientAPITests.debug.xcconfig */,
+				C01F2E044CADDB2F78AA8E96 /* Pods-OTFCloudClientAPI-OTFCloudClientAPITests.release.xcconfig */,
+				551E531C768F942730BEBBC5 /* Pods-OTFCloudClientAPIWatchOS.debug.xcconfig */,
+				A55333688649512B82CC84E7 /* Pods-OTFCloudClientAPIWatchOS.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -267,6 +303,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		84AA32882B4415A900DD9BB1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84AA32892B4415A900DD9BB1 /* OTFCloudClientAPI.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -274,7 +318,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 14A37FAC25C577FE007F00EF /* Build configuration list for PBXNativeTarget "OTFCloudClientAPI" */;
 			buildPhases = (
-				D977C8C872539AC35A96ED33 /* [CP] Check Pods Manifest.lock */,
+				F7D5AE0D2E78C419A0B2548F /* [CP] Check Pods Manifest.lock */,
 				14A37F9325C577FE007F00EF /* Headers */,
 				14A37F9425C577FE007F00EF /* Sources */,
 				14A37F9525C577FE007F00EF /* Frameworks */,
@@ -294,11 +338,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 14A37FAF25C577FE007F00EF /* Build configuration list for PBXNativeTarget "OTFCloudClientAPITests" */;
 			buildPhases = (
-				33EC5E988080FAD0A4E0B6CF /* [CP] Check Pods Manifest.lock */,
+				AF88A0DC421C916D31116F4F /* [CP] Check Pods Manifest.lock */,
 				14A37F9D25C577FE007F00EF /* Sources */,
 				14A37F9E25C577FE007F00EF /* Frameworks */,
 				14A37F9F25C577FE007F00EF /* Resources */,
-				19936A8DC59B0E7B63DA9899 /* [CP] Embed Pods Frameworks */,
+				2E82C9FD1519776660419561 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -327,6 +371,26 @@
 			productName = OTFCloudClientAPIApp;
 			productReference = 14F90476265237FA0022EA31 /* OTFCloudClientAPIApp.app */;
 			productType = "com.apple.product-type.application";
+		};
+		84AA32862B4415A900DD9BB1 /* OTFCloudClientAPIWatchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 84AA329D2B4415A900DD9BB1 /* Build configuration list for PBXNativeTarget "OTFCloudClientAPIWatchOS" */;
+			buildPhases = (
+				53396B43042510819B09E8F1 /* [CP] Check Pods Manifest.lock */,
+				84AA32882B4415A900DD9BB1 /* Headers */,
+				84AA328A2B4415A900DD9BB1 /* Sources */,
+				84AA32992B4415A900DD9BB1 /* Frameworks */,
+				84AA329B2B4415A900DD9BB1 /* Resources */,
+				84AA329C2B4415A900DD9BB1 /* Lint */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OTFCloudClientAPIWatchOS;
+			productName = TheraForgeNetworkService;
+			productReference = 84AA32A02B4415A900DD9BB1 /* OTFCloudClientAPIWatchOS.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -364,6 +428,7 @@
 			projectRoot = "";
 			targets = (
 				14A37F9725C577FE007F00EF /* OTFCloudClientAPI */,
+				84AA32862B4415A900DD9BB1 /* OTFCloudClientAPIWatchOS */,
 				14A37FA025C577FE007F00EF /* OTFCloudClientAPITests */,
 				14F90475265237FA0022EA31 /* OTFCloudClientAPIApp */,
 			);
@@ -397,6 +462,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		84AA329B2B4415A900DD9BB1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -418,7 +490,7 @@
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
-		19936A8DC59B0E7B63DA9899 /* [CP] Embed Pods Frameworks */ = {
+		2E82C9FD1519776660419561 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -435,7 +507,47 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OTFCloudClientAPI-OTFCloudClientAPITests/Pods-OTFCloudClientAPI-OTFCloudClientAPITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		33EC5E988080FAD0A4E0B6CF /* [CP] Check Pods Manifest.lock */ = {
+		53396B43042510819B09E8F1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-OTFCloudClientAPIWatchOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		84AA329C2B4415A900DD9BB1 /* Lint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Lint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		AF88A0DC421C916D31116F4F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -457,7 +569,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D977C8C872539AC35A96ED33 /* [CP] Check Pods Manifest.lock */ = {
+		F7D5AE0D2E78C419A0B2548F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -520,6 +632,27 @@
 				14F9047D265237FA0022EA31 /* ViewController.swift in Sources */,
 				14F90479265237FA0022EA31 /* AppDelegate.swift in Sources */,
 				14F9047B265237FA0022EA31 /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		84AA328A2B4415A900DD9BB1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84AA328B2B4415A900DD9BB1 /* Endpoint.swift in Sources */,
+				84AA328C2B4415A900DD9BB1 /* ForgeError.swift in Sources */,
+				84AA328D2B4415A900DD9BB1 /* Data+Extention.swift in Sources */,
+				84AA328E2B4415A900DD9BB1 /* Responses.swift in Sources */,
+				84AA328F2B4415A900DD9BB1 /* NetworkingLayer.swift in Sources */,
+				84AA32902B4415A900DD9BB1 /* Event.swift in Sources */,
+				84AA32912B4415A900DD9BB1 /* Encodable+Extensions.swift in Sources */,
+				84AA32922B4415A900DD9BB1 /* TheraForgeNetwork.swift in Sources */,
+				84AA32932B4415A900DD9BB1 /* TheraForgeKeychainService.swift in Sources */,
+				84AA32942B4415A900DD9BB1 /* Requests.swift in Sources */,
+				84AA32952B4415A900DD9BB1 /* Auth.swift in Sources */,
+				84AA32962B4415A900DD9BB1 /* Dictionary+Extensions.swift in Sources */,
+				84AA32972B4415A900DD9BB1 /* EventSource.swift in Sources */,
+				84AA32982B4415A900DD9BB1 /* URLSession+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -682,7 +815,7 @@
 		};
 		14A37FAD25C577FE007F00EF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2267DD976DAE2C8CEA7E5423 /* Pods-OTFCloudClientAPI.debug.xcconfig */;
+			baseConfigurationReference = 3070E53FEA6FD501FFF7FC2C /* Pods-OTFCloudClientAPI.debug.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -705,19 +838,19 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.HippocratesTech.OTFCloudClientAPI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator watchos watchsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,4";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WATCHOS_DEPLOYMENT_TARGET = 8.0;
 			};
 			name = Debug;
 		};
 		14A37FAE25C577FE007F00EF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 81FCB310F2813CB18333CD11 /* Pods-OTFCloudClientAPI.release.xcconfig */;
+			baseConfigurationReference = 9F69F700A5B7CDC2B4842F2F /* Pods-OTFCloudClientAPI.release.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -740,18 +873,18 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.HippocratesTech.OTFCloudClientAPI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator watchos watchsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,4";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WATCHOS_DEPLOYMENT_TARGET = 8.0;
 			};
 			name = Release;
 		};
 		14A37FB025C577FE007F00EF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6F5589288BB8BFCA143670CE /* Pods-OTFCloudClientAPI-OTFCloudClientAPITests.debug.xcconfig */;
+			baseConfigurationReference = 942B2F1663315986CF2AEDF7 /* Pods-OTFCloudClientAPI-OTFCloudClientAPITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
@@ -773,7 +906,7 @@
 		};
 		14A37FB125C577FE007F00EF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C3790D1B590F3709A55B8C13 /* Pods-OTFCloudClientAPI-OTFCloudClientAPITests.release.xcconfig */;
+			baseConfigurationReference = C01F2E044CADDB2F78AA8E96 /* Pods-OTFCloudClientAPI-OTFCloudClientAPITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
@@ -831,6 +964,75 @@
 			};
 			name = Release;
 		};
+		84AA329E2B4415A900DD9BB1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 551E531C768F942730BEBBC5 /* Pods-OTFCloudClientAPIWatchOS.debug.xcconfig */;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 474UVJ2BEF;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "OTFCloudClientAPIWatchOS-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.HippocratesTech.OTFCloudClientAPI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+			};
+			name = Debug;
+		};
+		84AA329F2B4415A900DD9BB1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A55333688649512B82CC84E7 /* Pods-OTFCloudClientAPIWatchOS.release.xcconfig */;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 474UVJ2BEF;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "OTFCloudClientAPIWatchOS-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.HippocratesTech.OTFCloudClientAPI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -866,6 +1068,15 @@
 			buildConfigurations = (
 				14F90488265237FB0022EA31 /* Debug */,
 				14F90489265237FB0022EA31 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		84AA329D2B4415A900DD9BB1 /* Build configuration list for PBXNativeTarget "OTFCloudClientAPIWatchOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84AA329E2B4415A900DD9BB1 /* Debug */,
+				84AA329F2B4415A900DD9BB1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -5,31 +5,34 @@ OTFCloudClientAPI implements the functions required to interact with the TheraFo
 
 ## Change Log
 <details open>
+<summary>Release 1.0.4-beta</summary>
+<ul>
+  <li>Added Watch OS target</li>
+</ul>
+</details>
+
+<details>
 <summary>Release 1.0.3-beta</summary>
 <ul>
-        <li>Added REST API endpoints to upload document, delete documment, re-name document and download document</li>
-        <li>Added new parameters in Sign Up API</li>
-        <li>Added Watch OS support</li>
+  <li>Added REST API endpoints to upload document, delete documment, re-name document and download document</li>
+  <li>Added new parameters in Sign Up API</li>
 </ul>
 </details>
 
 <details>
 <summary>Release 1.0.2-beta</summary>
 <ul>
-        <li>Added REST API endpoint to support user account deletion</li>
-        <li>Improved SSE event listeners and keys</li>
+  <li>Added REST API endpoint to support user account deletion</li>
+  <li>Improved SSE event listeners and keys</li>
 </ul>
 </details>
 
 <details>
 <summary>Release 1.0.0-beta</summary>
 <ul>
-        <li>First beta release of the framework</li>
+  <li>First beta release of the framework</li>
 </ul>
 </details>
-
-
-
 
 ## Configuration
 **Note:** Examples of usage of the following APIs can also be found in the `OTFMagicBox` app code as well as in the unit tests.

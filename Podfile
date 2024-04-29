@@ -8,10 +8,19 @@ target 'OTFCloudClientAPI' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
   pod 'KeychainAccess'
-  pod 'OTFCDTDatastore', '2.1.1-beta.3'
-  pod 'OTFUtilities', '1.0.0-beta'
+  pod 'OTFCDTDatastore', '2.1.1-beta.4'
+  pod 'OTFUtilities', '1.0.1-beta'
   # Pods for OTFCloudClientAPI
 
+  target 'OTFCloudClientAPIWatchOS' do
+    # Pods for testing
+    use_frameworks!
+    platform :watchos, '8.0'
+    pod 'KeychainAccess'
+    pod 'OTFCDTDatastore', '2.1.1-beta.4'
+    pod 'OTFUtilities', '1.0.1-beta'
+  end
+  
   target 'OTFCloudClientAPITests' do
     # Pods for testing
   end
@@ -21,6 +30,7 @@ target 'OTFCloudClientAPI' do
       project.targets.each do |target|
         target.build_configurations.each do |config|
           config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+          config.build_settings['WATCHOS_DEPLOYMENT_TARGET'] = '8.0'
         end
       end
     end

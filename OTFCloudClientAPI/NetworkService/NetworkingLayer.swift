@@ -1,39 +1,41 @@
 /*
-Copyright (c) 2021, Hippocrates Technologies S.r.l.. All rights reserved.
+ Copyright (c) 2021, Hippocrates Technologies S.r.l.. All rights reserved.
 
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
+ Redistribution and use in source and binary forms, with or without modification,
+ are permitted provided that the following conditions are met:
 
-1. Redistributions of source code must retain the above copyright notice,
-this list of conditions and the following disclaimer.
+ 1. Redistributions of source code must retain the above copyright notice,
+ this list of conditions and the following disclaimer.
 
-2. Redistributions in binary form must reproduce the above copyright notice,
-this list of conditions and the following disclaimer in the documentation and/or
-other materials provided with the distribution.
+ 2. Redistributions in binary form must reproduce the above copyright notice,
+ this list of conditions and the following disclaimer in the documentation and/or
+ other materials provided with the distribution.
 
-3. Neither the name of the copyright holder(s) nor the names of any contributor(s) may
-be used to endorse or promote products derived from this software without specific
-prior written permission. No license is granted to the trademarks of the copyright
-holders even if such marks are included in this software.
+ 3. Neither the name of the copyright holder(s) nor the names of any contributor(s) may
+ be used to endorse or promote products derived from this software without specific
+ prior written permission. No license is granted to the trademarks of the copyright
+ holders even if such marks are included in this software.
 
-4. Commercial redistribution in any form requires an explicit license agreement with the
-copyright holder(s). Please contact support@hippocratestech.com for further information
-regarding licensing.
+ 4. Commercial redistribution in any form requires an explicit license agreement with the
+ copyright holder(s). Please contact support@hippocratestech.com for further information
+ regarding licensing.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
-OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
-OF SUCH DAMAGE.
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+ OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+ OF SUCH DAMAGE.
  */
 
 import Foundation
+#if TARGET_OS_IOS
 import UIKit
+#endif
 import OTFUtilities
 
 typealias NetworkResponse<T> = (Result<T, ForgeError>) -> Void
@@ -63,7 +65,11 @@ public class NetworkingLayer: NetworkServiceProtocol {
         if let storedUUID = self.keychainService.load(for: .vendorID) {
             uuid = storedUUID
         } else {
+            #if os(watchOS)
+            let newUUID = UUID().uuidString
+            #else
             let newUUID = UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
+            #endif
             self.keychainService.save(token: newUUID, for: .vendorID)
         }
         return uuid
@@ -78,23 +84,23 @@ public class NetworkingLayer: NetworkServiceProtocol {
             self.apiKey = apiKey
             self.requestTimeout = timeoutInterval
         }
-        
+
         public let APIBaseURL: URL
         public let apiKey: String
         public var requestTimeout: TimeInterval
     }
-    
+
     private(set) static var configurations: Configurations!
-    
+
     internal static func configureNetwork(_ configs: Configurations) {
         Self.configurations = configs
     }
-    
+
     private init() {
         guard Self.configurations != nil else {
             fatalError("Network settings not configured before accessing the network instance.")
         }
-        
+
         self.session = NetworkingLayer.createSession()
         self.keychainService = TheraForgeKeychainService.shared
     }
@@ -132,7 +138,7 @@ extension NetworkingLayer {
         eventSource?.addEventListener("user-connected") { event in
             OTFLog("SSE On added event listener: %{public}@", event.type.rawValue)
         }
-        
+
         eventSource?.connect()
     }
 
@@ -199,22 +205,22 @@ extension NetworkingLayer {
                 TheraForgeKeychainService.shared.save(auth: nil)
                 TheraForgeKeychainService.shared.save(user: nil)
             }
-            
+
             completionHandler(response)
         })
     }
-    
+
     public func socialLogin(request: Request.SocialLogin, completionHandler: @escaping (Result<Response.Login, ForgeError>) -> Void) {
         performRequest(endpoint: Endpoint.socialLogin, method: .POST, request: request, authRequired: false, completionHandler: { [weak self] (response: Result<Response.Login, ForgeError>) in
             self?.handleResponse(response)
             completionHandler(response)
         })
     }
-    
+
     public func changePassword(request: Request.ChangePassword, completionHandler: @escaping (Result<Response.ChangePassword, ForgeError>) -> Void) {
         performRequest(endpoint: Endpoint.changePassword, method: .PUT, request: request, authRequired: true, completionHandler: completionHandler)
     }
-    
+
     public func deleteAccount(request: Request.DeleteAccount, completionHandler: @escaping (Result<Response.DeleteAccount, ForgeError>) -> Void) {
         performRequest(endpoint: Endpoint.deleteAccount(userId: request.userId), method: .DELETE, request: request, authRequired: true, completionHandler: completionHandler)
     }
@@ -235,7 +241,7 @@ extension NetworkingLayer {
     public func resetPassword(request: Request.ResetPassword, completionHandler: @escaping (Result<Response.ChangePassword, ForgeError>) -> Void) {
         performRequest(endpoint: Endpoint.resetPassword, method: .PUT, request: request, authRequired: false, completionHandler: completionHandler)
     }
-    
+
     // MARK: - File management
     public func updateProfilePicture(request: Request.UploadFile, completionHandler: @escaping (Result<Response.UploadFile, ForgeError>) -> Void) {
         do {
@@ -246,7 +252,7 @@ extension NetworkingLayer {
             completionHandler(.failure(.init(nsError: error as NSError)))
         }
     }
-    
+
     public func downloadProfilePicture(request: Request.DownloadFile, completionHandler: @escaping (Result<Response.FileResponse, ForgeError>) -> Void) {
         do {
             let endPoint = Endpoint.getUploadFile
@@ -258,7 +264,7 @@ extension NetworkingLayer {
             completionHandler(.failure(.init(nsError: error as NSError)))
         }
     }
-    
+
     public func uploadFile(request: Request.UploadFiles, completionHandler: @escaping (Result<Response.FileResponse, ForgeError>) -> Void) {
         do {
             let endPoint = Endpoint.uploadFile
@@ -274,25 +280,25 @@ extension NetworkingLayer {
             completionHandler(.failure(.init(nsError: error as NSError)))
         }
     }
-    
+
     public func deleteFile(request: Request.FileAttachmentId, completionHandler: @escaping (Result<Response.DeleteFile, ForgeError>) -> Void) {
-            let params = ["attachmentID": request.attachmentID]
+        let params = ["attachmentID": request.attachmentID]
         performRequest(endpoint: Endpoint.deleteFile, method: .DELETE, request: request, authRequired: true, containHeaders: true, parameters: params, completionHandler: completionHandler)
     }
-    
+
     public func getFileInfo(request: Request.FileAttachmentId, completionHandler: @escaping (Result<Response.FileInfo, ForgeError>) -> Void) {
-            let params = ["attachmentID": request.attachmentID]
+        let params = ["attachmentID": request.attachmentID]
         performRequest(endpoint: Endpoint.getFileInfo, method: .GET, request: request, authRequired: true, containHeaders: true, parameters: params, completionHandler: completionHandler)
     }
-    
+
     public func getRevision(request: Request.FileAttachmentId, completionHandler: @escaping (Result<Response.GetRevision, ForgeError>) -> Void) {
-            let params = ["attachmentID": request.attachmentID]
+        let params = ["attachmentID": request.attachmentID]
         performRequest(endpoint: Endpoint.getFileRevision, method: .GET, request: request, authRequired: true, containHeaders: true, parameters: params, completionHandler: completionHandler)
     }
-    
+
     public func getFileInfo(request: Request.FileRename, completionHandler: @escaping (Result<Response.FileInfo, ForgeError>) -> Void) {
-            let params = ["attachmentID": request.attachmentID,
-                          "name": request.name]
+        let params = ["attachmentID": request.attachmentID,
+                      "name": request.name]
         performRequest(endpoint: Endpoint.fileRename, method: .GET, request: request, authRequired: true, containHeaders: true, parameters: params, completionHandler: completionHandler)
     }
 }
@@ -334,14 +340,14 @@ extension NetworkingLayer {
                 }
             }
         }
-        
+
         if let parameterData = parameterData {
             request.httpBody = parameterData
         }
-        
+
         if authRequired {
             request.addValue("\(NetworkingLayer.shared.identifierForVendor)", forHTTPHeaderField: "Client")
-            
+
             if let currentAuth = currentAuth {
                 request.addValue("Bearer \(currentAuth.token)", forHTTPHeaderField: "Authorization")
             } else if let auth = keychainService.loadAuth() {
@@ -352,7 +358,7 @@ extension NetworkingLayer {
         request.httpMethod = method.rawValue
         return request
     }
-    
+
     private func urlRequestWithHeader(endpoint: EndpointImplementable,
                                       method: HTTPMethod,
                                       parameters: [String: Any]? = nil,
@@ -369,7 +375,7 @@ extension NetworkingLayer {
         }
         if authRequired {
             request.addValue("\(NetworkingLayer.shared.identifierForVendor)", forHTTPHeaderField: "Client")
-            
+
             if let currentAuth = currentAuth {
                 request.addValue("Bearer \(currentAuth.token)", forHTTPHeaderField: "Authorization")
             } else if let auth = keychainService.loadAuth() {
@@ -380,7 +386,7 @@ extension NetworkingLayer {
         request.httpMethod = method.rawValue
         return request
     }
-    
+
     func urlRequestWithqueryItems(endpoint: Endpoint,
                                   method: HTTPMethod,
                                   parameters: [String: String]?,
@@ -391,15 +397,15 @@ extension NetworkingLayer {
         guard let urlComponents = URLComponents(string: url.absoluteString) else {
             throw error
         }
-        
+
         guard let finalURL = urlComponents.url else {
             throw error
         }
-        
+
         var request = URLRequest(url: finalURL, cachePolicy: URLRequest.CachePolicy.reloadIgnoringCacheData)
         request.httpMethod = method.rawValue
         request.addValue("\(Self.configurations.apiKey)", forHTTPHeaderField: "API-KEY")
-        
+
         if let parameterData = requestBody {
             request.httpBody = parameterData
             if let type = parameters?["fileName"] {
@@ -410,28 +416,28 @@ extension NetworkingLayer {
                 }
             }
         }
-        
+
         guard authRequired else {
             return request
         }
-        
+
         if let parameters = parameters {
             for (type, value) in parameters {
                 request.addValue(value, forHTTPHeaderField: type)
             }
         }
-        
+
         request.addValue("\(NetworkingLayer.shared.identifierForVendor)", forHTTPHeaderField: "Client")
-        
+
         if let currentAuth = currentAuth {
             request.addValue("Bearer \(currentAuth.token)", forHTTPHeaderField: "Authorization")
         } else if let auth = keychainService.loadAuth() {
             request.addValue("Bearer \(auth.token)", forHTTPHeaderField: "Authorization")
         }
-        
+
         return request
     }
-    
+
     func multipartFormRequest(endpoint: EndpointImplementable,
                               method: HTTPMethod,
                               parameters: [String: Any]? = nil,
@@ -442,7 +448,7 @@ extension NetworkingLayer {
               var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
             throw ForgeError(error: .init(statusCode: 400, name: NSCocoaErrorDomain, message: "Invalid URL request", code: nil))
         }
-        
+
         urlComponents.queryItems = [URLQueryItem(name: "type", value: attachmentLocation.rawValue)]
         var request = URLRequest(url: urlComponents.url!, cachePolicy: .reloadIgnoringCacheData)
         let fileName = "file"
@@ -450,24 +456,24 @@ extension NetworkingLayer {
         var body = ""
         body += "--\(boundary)\r\n"
         body += "Content-Disposition:form-data; name=\"\(fileName)\""
-        
+
         let fileContent = parameterData.base64EncodedString()
         body += "; filename=\"\(fileName)\"\r\n" + "Content-Type: \"content-type header\"\r\n\r\n\(fileContent)\r\n"
         body += "--\(boundary)--\r\n"
-        
+
         let postData = body.data(using: .utf8)
         request.httpBody = postData
-        
+
         if authRequired {
             request.addValue("\(NetworkingLayer.shared.identifierForVendor)", forHTTPHeaderField: "Client")
-            
+
             if let currentAuth = currentAuth {
                 request.addValue("Bearer \(currentAuth.token)", forHTTPHeaderField: "Authorization")
             } else if let auth = keychainService.loadAuth() {
                 request.addValue("Bearer \(auth.token)", forHTTPHeaderField: "Authorization")
             }
         }
-        
+
         request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         request.addValue("\(Self.configurations.apiKey)", forHTTPHeaderField: "API-KEY")
         request.httpMethod = method.rawValue
@@ -496,7 +502,7 @@ extension NetworkingLayer {
             urlRequest = self.urlRequest(endpoint: endpoint, method: method, containHeaders: containHeaders,
                                          parameters: parameters, authRequired: authRequired)
         } else if method == .PUT {
-            
+
             do {
                 let parameters = try JSONEncoder().encode(request)
                 urlRequest = self.urlRequestWithHeader(endpoint: endpoint, method: method,
@@ -504,11 +510,11 @@ extension NetworkingLayer {
             } catch {
                 completionHandler(.failure(ForgeError(nsError: error as NSError)))
             }
-            
+
         } else {
             urlRequest = self.urlRequest(endpoint: endpoint, method: method, containHeaders: containHeaders, parameters: parameters, authRequired: authRequired)
         }
-        
+
         switch endpoint {
         case Endpoint.refreshToken:
             performURLRequest(urlRequest, completionHandler: completionHandler)
@@ -519,7 +525,7 @@ extension NetworkingLayer {
                                           completionHandler: completionHandler)
         }
     }
-    
+
     private func checkAuthAndPerformURLRequest<T: Decodable>(_ request: URLRequest,
                                                              authRequired: Bool,
                                                              expectJSONResponse: Bool,
@@ -558,7 +564,7 @@ extension NetworkingLayer {
             }
         }
     }
-    
+
     private func performMultipartURLRequest<T: Decodable>(_ request: URLRequest,
                                                           completionHandler: @escaping NetworkResponse<T>) {
         let log = logDebugInfo
@@ -584,19 +590,23 @@ extension NetworkingLayer {
                                         completionHandler(.failure(corruptDataError))
                                         return
                                     }
-                                    
+
                                     guard let metadataPart = multiparts.first(where: { $0.contentType.contains("metadata") }) else {
                                         completionHandler(.failure(corruptDataError))
                                         return
                                     }
-                                    
+
                                     let metadata = try JSONDecoder().decode(Response.Metadata.self, from: metadataPart.body)
                                     let finalResponse = Response.FileResponse(metadata: metadata, data: attachmentPart.body)
-                                    completionHandler(.success(finalResponse as! T))
+                                    guard let finalResp = finalResponse as? T else {
+                                        completionHandler(.failure(.invalidResponse))
+                                        return
+                                    }
+                                    completionHandler(.success(finalResp))
                                 } else {
                                     completionHandler(.failure(ForgeError(error: .init(statusCode: 403, name: "Not found", message: "Boundary value not found", code: nil))))
                                 }
-                                
+
                             case 400...499:
                                 let errorData = try JSONDecoder().decode(ForgeError.ErrorData.self, from: data)
                                 completionHandler(.failure(ForgeError(error: errorData)))
@@ -617,7 +627,7 @@ extension NetworkingLayer {
             }// END: last else statement
         }.resume()
     }
-    
+
     private func performURLRequest<T: Decodable>(_ request: URLRequest,
                                                  completionHandler: @escaping NetworkResponse<T>) {
         let log = logDebugInfo
