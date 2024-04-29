@@ -4,16 +4,17 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
     - Carthage
     - Pods
     - SwiftLint/Common/3rdPartyLib
-
 disabled_rules: # rule identifiers to exclude from running
     - trailing_whitespace
-    - force_cast
-    - force_unwrapping
-    - force_try
+#    - force_cast
+#    - force_unwrapping
+#    - force_try
     - empty_enum_arguments
-    - overridden_super_call
-    - sorted_imports
-    - vertical_whitespace
+#    - overridden_super_call
+#    - sorted_imports
+#    - vertical_whitespace
+    - inclusive_language
+    - trailing_closure
 #    - colon # Default configuration: warning, flexible_right_spacing: false, apply_to_dictionaries: true
 #    - comma # Default configuration: warning
 #    - opening_brace
@@ -56,6 +57,10 @@ opt_in_rules: # some rules are only opt-in
     - multiline_parameters
 #    - multiple_empty_lines # Defined into custom roles
     - nesting
+    - file_name
+    - convenience_type
+    - modifier_order
+    - unused_private_declaration
 
     - private_outlet
     - prohibited_super_call
@@ -63,8 +68,6 @@ opt_in_rules: # some rules are only opt-in
     - redundant_nil_coalescing
     - syntactic_sugar
     - comments_space
-    - comments_capitalized_ignore_possible_code
-    - comments_capitalized_find_possible_code
     - conditional_returns_on_newline
 
 conditional_returns_on_newline:
@@ -82,8 +85,8 @@ function_body_length:
     error: 500
 
 function_parameter_count:
-    warning: 5
-    error: 6
+    warning: 6
+    error: 8
 
 type_name: # class name
     min_length: 3
@@ -96,8 +99,8 @@ type_body_length:
     error: 500
 
 file_length:
-    warning: 500
-    error: 800
+    warning: 1000
+    error: 1500
     ignore_comment_only_lines: true
 
 identifier_name: # Variable name

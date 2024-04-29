@@ -1,35 +1,35 @@
 /*
-Copyright (c) 2021, Hippocrates Technologies S.r.l.. All rights reserved.
+ Copyright (c) 2021, Hippocrates Technologies S.r.l.. All rights reserved.
 
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
+ Redistribution and use in source and binary forms, with or without modification,
+ are permitted provided that the following conditions are met:
 
-1. Redistributions of source code must retain the above copyright notice,
-this list of conditions and the following disclaimer.
+ 1. Redistributions of source code must retain the above copyright notice,
+ this list of conditions and the following disclaimer.
 
-2. Redistributions in binary form must reproduce the above copyright notice,
-this list of conditions and the following disclaimer in the documentation and/or
-other materials provided with the distribution.
+ 2. Redistributions in binary form must reproduce the above copyright notice,
+ this list of conditions and the following disclaimer in the documentation and/or
+ other materials provided with the distribution.
 
-3. Neither the name of the copyright holder(s) nor the names of any contributor(s) may
-be used to endorse or promote products derived from this software without specific
-prior written permission. No license is granted to the trademarks of the copyright
-holders even if such marks are included in this software.
+ 3. Neither the name of the copyright holder(s) nor the names of any contributor(s) may
+ be used to endorse or promote products derived from this software without specific
+ prior written permission. No license is granted to the trademarks of the copyright
+ holders even if such marks are included in this software.
 
-4. Commercial redistribution in any form requires an explicit license agreement with the
-copyright holder(s). Please contact support@hippocratestech.com for further information
-regarding licensing.
+ 4. Commercial redistribution in any form requires an explicit license agreement with the
+ copyright holder(s). Please contact support@hippocratestech.com for further information
+ regarding licensing.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
-OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
-OF SUCH DAMAGE.
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+ OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+ OF SUCH DAMAGE.
  */
 
 import XCTest
@@ -42,28 +42,23 @@ class OTFCloudClientAPITests: XCTestCase {
     // Let's not change the following data:
     var realNetworkService: NetworkingLayer!
     var blob: CDTBlobData!
-    
+
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         try super.setUpWithError()
         guard let url = Defaults.apiURL else {
-            
+
             return
         }
-        
+
         let configurations = NetworkingLayer.Configurations(APIBaseURL: url, apiKey: Defaults.APIKEY)
         TheraForgeNetwork.configureNetwork(configurations)
-        
+
         realNetworkService = NetworkingLayer(session: NetworkingLayer.createSession(),
                                              keychainService: TheraForgeKeychainService.shared,
                                              currentAuth: nil)
 
         try testLogin()
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        try super.tearDownWithError()
     }
 }
 
@@ -111,7 +106,7 @@ extension OTFCloudClientAPITests {
             }
         }
     }
-    
+
     func testSocialLogin() {
         let promise = expectation(description: "There should be an error in case of wrong email/password. and error should not be nil.")
         // swiftlint:disable line_length
@@ -131,7 +126,7 @@ extension OTFCloudClientAPITests {
                 XCTFail("🔥 \(error.error.message)")
             }
         }
-        
+
         waitForExpectations(timeout: requestTimeoutInterval) { error in
             if let error = error {
                 OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
@@ -156,7 +151,7 @@ extension OTFCloudClientAPITests {
                                           publicKey: "testPublicKey",
                                           encryptedDefaultStorageKey: "encryptedDefaultStorageKey",
                                           encryptedConfidentialStorageKey: "encryptedDefaultStorageKey"
-                                         )
+                                    )
         ) { (result) in
             XCTAssertNotNil(result)
             switch result {
@@ -325,10 +320,10 @@ extension OTFCloudClientAPITests {
             }
         }
     }
-    
+
     func testUpdateProfilePicture() {
         let promise = expectation(description: "User Should logged out and should get the message 'Logged out.' from the server." )
-        
+
         guard let filePath = Bundle(for: type(of: self)).path(forResource: "user", ofType: "png"),
               let image = UIImage(contentsOfFile: filePath),
               let data = image.pngData() else {
@@ -345,17 +340,17 @@ extension OTFCloudClientAPITests {
             }
             promise.fulfill()
         }
-        
+
         waitForExpectations(timeout: requestTimeoutInterval) { error in
             if let error = error {
                 OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
             }
         }
     }
-    
+
     func testDownloadProfilePicture() {
         let promise = expectation(description: "User Should logged out and should get the message 'Logged out.' from the server." )
-        
+
         let request = Request.DownloadFile(attachmentID: "c93dd5d5-1571-47e8-b7f6-fd8218fb9819", meta: "true")
         realNetworkService.downloadProfilePicture(request: request) { result in
             XCTAssertNotNil(result)
@@ -367,26 +362,26 @@ extension OTFCloudClientAPITests {
                 XCTFail("🔥 \(error.error.message)")
             }
         }
-        
+
         waitForExpectations(timeout: requestTimeoutInterval) { error in
             if let error = error {
                 OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
             }
         }
     }
-    
+
     func testUploadFile() {
-        
+
         let promise = expectation(description: "User Should logged out and should get the message 'Logged out.' from the server." )
 
         guard let filePath = Bundle(for: type(of: self)).url(forResource: "user", withExtension: "png"),
-                let data = try? Data(contentsOf: filePath) else {
+              let data = try? Data(contentsOf: filePath) else {
             fatalError("Image not available")
         }
-        
+
         let request = Request.UploadFiles(data: data, fileName: "user.png", type: .profile, meta: "true", encryptedFileKey: "",
                                           hashFileKey: "")
-        
+
         realNetworkService.uploadFile(request: request) { result in
             XCTAssertNotNil(result)
             switch result {
@@ -398,108 +393,108 @@ extension OTFCloudClientAPITests {
             }
             promise.fulfill()
         }
-        
+
         waitForExpectations(timeout: requestTimeoutInterval) { error in
             if let error = error {
                 OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
             }
         }
     }
-    
+
     func testUploadConsentForm() {
-            
-            let promise = expectation(description: "User Should logged out and should get the message 'Logged out.' from the server." )
 
-            guard let filePath = Bundle(for: type(of: self)).url(forResource: "cheatsheet", withExtension: "pdf"),
-                    let data = try? Data(contentsOf: filePath) else {
-                fatalError("Image not available")
-            }
-            
-            let request = Request.UploadFiles(data: data, fileName: "cheatsheet.pdf", type: .consentForm, meta: "true", encryptedFileKey: "", hashFileKey: "")
+        let promise = expectation(description: "User Should logged out and should get the message 'Logged out.' from the server." )
 
-            let startTime = Date()
-            realNetworkService.uploadFile(request: request) { result in
-                XCTAssertNotNil(result)
-                switch result {
-                case .success(let response):
-                    let endTime = Date()
-                    let diffInSecs = endTime.timeIntervalSince(startTime)
-                    OTFLog("Time taken to upload the file: %{public}@", diffInSecs,
-                           category: LoggerCategory.networking.rawValue)
-                    XCTAssertNotNil(response)
-                    promise.fulfill()
-                case .failure(let error):
-                    XCTFail("🔥 \(error)")
-                }
+        guard let filePath = Bundle(for: type(of: self)).url(forResource: "cheatsheet", withExtension: "pdf"),
+              let data = try? Data(contentsOf: filePath) else {
+            fatalError("Image not available")
+        }
+
+        let request = Request.UploadFiles(data: data, fileName: "cheatsheet.pdf", type: .consentForm, meta: "true", encryptedFileKey: "", hashFileKey: "")
+
+        let startTime = Date()
+        realNetworkService.uploadFile(request: request) { result in
+            XCTAssertNotNil(result)
+            switch result {
+            case .success(let response):
+                let endTime = Date()
+                let diffInSecs = endTime.timeIntervalSince(startTime)
+                OTFLog("Time taken to upload the file: %{public}@", diffInSecs,
+                       category: LoggerCategory.networking.rawValue)
+                XCTAssertNotNil(response)
                 promise.fulfill()
+            case .failure(let error):
+                XCTFail("🔥 \(error)")
             }
-            
-            waitForExpectations(timeout: requestTimeoutInterval) { error in
-                if let error = error {
-                    OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
-                }
+            promise.fulfill()
+        }
+
+        waitForExpectations(timeout: requestTimeoutInterval) { error in
+            if let error = error {
+                OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
             }
         }
-    
-    func testUploadConsentFormWithEncrypted() {
-            
-            let promise = expectation(description: "User Should logged out and should get the message 'Logged out.' from the server." )
+    }
 
-            guard let filePath = Bundle(for: type(of: self)).url(forResource: "cheatsheet", withExtension: "pdf"),
-                    let data = try? Data(contentsOf: filePath) else {
-                fatalError("Image not available")
-            }
-        
+    func testUploadConsentFormWithEncrypted() {
+
+        let promise = expectation(description: "User Should logged out and should get the message 'Logged out.' from the server." )
+
+        guard let filePath = Bundle(for: type(of: self)).url(forResource: "cheatsheet", withExtension: "pdf"),
+              let data = try? Data(contentsOf: filePath) else {
+            fatalError("Image not available")
+        }
+
         let swiftSodium = SwiftSodium()
         let masterKey = swiftSodium.generateMasterKey(password: "123123123123", email: "azeem.invozone@gmail.com")
         let bytesImage = swiftSodium.getArrayOfBytesFromData(FileData: data as NSData)
         let defaultStorageKey = swiftSodium.generateDefaultStorageKey(masterKey: masterKey)
-      
+
         let fileKeyPushStream = swiftSodium.getPushStream(secretKey: defaultStorageKey)!
         let fileKey = swiftSodium.generateDeriveKey(key: defaultStorageKey)
         let eFileKey = swiftSodium.encryptFile(pushStream: fileKeyPushStream, fileBytes: fileKey)
-        let _ = [fileKeyPushStream.header(), eFileKey].flatMap({ (element: [UInt8]) -> [UInt8] in
+        _ = [fileKeyPushStream.header(), eFileKey].flatMap({ (element: [UInt8]) -> [UInt8] in
             return element
         })
-        
+
         // encrypt file
         let documentPushStream = swiftSodium.getPushStream(secretKey: fileKey)!
         let fileencryption = swiftSodium.encryptFile(pushStream: documentPushStream, fileBytes: bytesImage)
         let newFile = [documentPushStream.header(), fileencryption].flatMap({ (element: [UInt8]) -> [UInt8] in
             return element
         })
-        
-        let _ = swiftSodium.generateGenericHashWithKey(message: newFile, fileKey: fileKey)
+
+        _ = swiftSodium.generateGenericHashWithKey(message: newFile, fileKey: fileKey)
         let encryptedFileData = Data(newFile)
-        
+
         let uuid = UUID().uuidString + ".pdf"
 
-            let request = Request.UploadFiles(data: encryptedFileData, fileName: uuid, type: .consentForm, meta: "true", encryptedFileKey: "encryptedFileKeyHex", hashFileKey: "hashKeyFileHex")
+        let request = Request.UploadFiles(data: encryptedFileData, fileName: uuid, type: .consentForm, meta: "true", encryptedFileKey: "encryptedFileKeyHex", hashFileKey: "hashKeyFileHex")
 
-            let startTime = Date()
-            realNetworkService.uploadFile(request: request) { result in
-                XCTAssertNotNil(result)
-                switch result {
-                case .success(let response):
-                    let endTime = Date()
-                    let diffInSecs = endTime.timeIntervalSince(startTime)
-                    OTFLog("Time taken to upload the file: %{public}@", diffInSecs,
-                           category: LoggerCategory.networking.rawValue)
-                    XCTAssertNotNil(response)
-                    promise.fulfill()
-                case .failure(let error):
-                    XCTFail("🔥 \(error)")
-                }
+        let startTime = Date()
+        realNetworkService.uploadFile(request: request) { result in
+            XCTAssertNotNil(result)
+            switch result {
+            case .success(let response):
+                let endTime = Date()
+                let diffInSecs = endTime.timeIntervalSince(startTime)
+                OTFLog("Time taken to upload the file: %{public}@", diffInSecs,
+                       category: LoggerCategory.networking.rawValue)
+                XCTAssertNotNil(response)
                 promise.fulfill()
+            case .failure(let error):
+                XCTFail("🔥 \(error)")
             }
-            
-            waitForExpectations(timeout: requestTimeoutInterval) { error in
-                if let error = error {
-                    OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
-                }
+            promise.fulfill()
+        }
+
+        waitForExpectations(timeout: requestTimeoutInterval) { error in
+            if let error = error {
+                OTFError("Test failed Error: : %{public}@,", error.localizedDescription, category: LoggerCategory.xcTest.rawValue)
             }
         }
-    
+    }
+
     // MARK: - Delete File
     func testDeleteFile() {
         let promise = expectation(description: "Should got failed for invalid code on reset password.")
@@ -520,7 +515,7 @@ extension OTFCloudClientAPITests {
             }
         }
     }
-    
+
     // MARK: - Get FileInfo
     func testGetFileInfo() {
         let promise = expectation(description: "Should got failed for invalid code on reset password.")
@@ -541,7 +536,7 @@ extension OTFCloudClientAPITests {
             }
         }
     }
-    
+
     // MARK: - File Rename
     func testFileRename() {
         let promise = expectation(description: "Should got failed for invalid code on reset password.")
@@ -562,5 +557,5 @@ extension OTFCloudClientAPITests {
             }
         }
     }
-    
+
 }
