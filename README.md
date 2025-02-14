@@ -1,20 +1,30 @@
 # OTFCloudClientAPI
 This is TheraForge's client REST API framework to connect to TheraForge's secure CloudBox Backend-as-a-Service (BaaS).
 
-OTFCloudClientAPI implements the functions required to interact with the TheraForge cloud back-end.
+OTFCloudClientAPI implements the functions required to interact with the TheraForge cloud backend.
 
 ## Change Log
+
 <details open>
+<summary>Release 1.0.5-beta</summary>
+<ul>
+  <li>Added email verification support and flexible return codes</li>
+  <li>Updated company name and copyright date</li>
+  <li>Various enhancements</li>
+</ul>
+</details>
+
+<details>
 <summary>Release 1.0.4-beta</summary>
 <ul>
-  <li>Added Watch OS target</li>
+  <li>Added the watchOS target</li>
 </ul>
 </details>
 
 <details>
 <summary>Release 1.0.3-beta</summary>
 <ul>
-  <li>Added REST API endpoints to upload document, delete documment, re-name document and download document</li>
+  <li>Added REST API endpoints to upload document, delete document, rename document and download document</li>
   <li>Added new parameters in Sign Up API</li>
 </ul>
 </details>
@@ -135,7 +145,7 @@ otfNetworkService.resetPassword(request: .init(email: "Your email address", code
 ```
 
 ## Refresh Token
-The auth token that you get upon authentication is valid for 30 minutes only. In the auth object, you get the refresh token as well. Use this refresh token to refresh your auth token. Once you authorise the auth and user objects are stored in the keychain. You need to make sure that you have a refresh token before calling this API, else the application will crash:
+The auth token that you get upon authentication is valid for 30 minutes only. The auth object includes the refresh token. Use this refresh token to refresh your auth token. Once you authorise the auth and user objects are stored in the keychain. You need to make sure that you have a refresh token before calling this API, else the application will crash:
 
 ```
 guard TheraForgeKeychainService.shared.loadAuth().refreshToken != nil else {
@@ -157,7 +167,7 @@ otfNetworkService.signOut { (result) in
 ```
 
 ## Upload Document
-When you need to upload document you may call the uploadFile API like so:
+To upload a document, call the uploadFile API as follows:
 
 ```
 otfNetworkService.uploadFile(request: .init(data: "Document", fileName: "your file name", type: "Profile|Documents|ConsentForm", meta: "true", encryptedFileKey: "your encrypted file key", hashFileKey: "system generated hashFileKey Hex"))
@@ -168,7 +178,7 @@ otfNetworkService.uploadFile(request: .init(data: "Document", fileName: "your fi
 ```
 
 ## Download Document
-When you need to download document you may call the getUploadFile API like so:
+To download a document, call the getUploadFile API as follows:
 
 ```
 otfNetworkService.downloadProfilePicture(request: .init(attachmentID: "file attachment ID", meta: "Boolean")) 
@@ -179,7 +189,7 @@ otfNetworkService.downloadProfilePicture(request: .init(attachmentID: "file atta
 ```
 
 ## Delete Document
-When you need to delete document you may call the deleteFile API like so:
+To delete a document, call the deleteFile API as follows:
 
 ```
 otfNetworkService.deleteFile(request: .init(attachmentID: "file attachment ID")) 
@@ -202,7 +212,7 @@ otfNetworkService.eventSourceOnOpen = {
 ```
 
 2. Event received:
-Once subscribed for the events the application keep getting the events.
+Once subscribed to the events, the application will continuously receive them.
 
 ```
 otfNetworkService.onReceivedMessage = { event in
