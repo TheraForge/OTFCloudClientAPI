@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2021, Hippocrates Technologies S.r.l.. All rights reserved.
+ Copyright (c) 2024, Hippocrates Technologies Sagl. All rights reserved.
 
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -37,10 +37,10 @@ import Foundation
 public enum Request {
 
     public enum AttachmentLocation: String, Codable {
-        case profile = "Profile"
-        case documents = "Documents"
-        case consentForm = "ConsentForm"
-        case settings = "Settings"
+        case profile = "profile"
+        case documents = "documents"
+        case consentForm = "consentForm"
+        case settings = "settings"
     }
 
     public struct Login: Codable {
@@ -57,7 +57,6 @@ public enum Request {
         public init(refreshToken: String) {
             self.refreshToken = refreshToken
         }
-
         public let refreshToken: String
     }
 
@@ -130,6 +129,13 @@ public enum Request {
         public let newPassword: String
     }
 
+    public struct ResendVerifyEmail: Codable{
+        public init(email: String){
+            self.email = email
+        }
+        public let email: String
+    }
+    
     public struct ForgotPassword: Codable {
         public init(email: String) {
             self.email = email

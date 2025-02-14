@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2021, Hippocrates Technologies S.r.l.. All rights reserved.
+ Copyright (c) 2024, Hippocrates Technologies Sagl. All rights reserved.
 
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -50,6 +50,8 @@ public protocol NetworkServiceProtocol {
 
     func signup(request: Request.SignUp, completionHandler: @escaping (_ result: Result<Response.Login, ForgeError>) -> Void)
 
+    func resendVerifyEmail(request: Request.ResendVerifyEmail, completionHandler: @escaping(_ result: Result<Response.ResendVerifyEmail, ForgeError>) -> Void)
+    
     func socialLogin(request: Request.SocialLogin, completionHandler: @escaping (_ result: Result<Response.Login, ForgeError>) -> Void)
 
     func signOut(completionHandler: @escaping (_ result: Result<Response.LogOut, ForgeError>) -> Void)
@@ -144,6 +146,10 @@ public class TheraForgeNetwork: NSObject, NetworkServiceProtocol, CDTNSURLSessio
         network.signup(request: request, completionHandler: completionHandler)
     }
 
+    public func resendVerifyEmail(request: Request.ResendVerifyEmail, completionHandler: @escaping(_ result: Result<Response.ResendVerifyEmail, ForgeError>) -> Void){
+        network.resendVerifyEmail(request: request, completionHandler: completionHandler)
+    }
+    
     public func socialLogin(request: Request.SocialLogin, completionHandler: @escaping (Result<Response.Login, ForgeError>) -> Void) {
         network.socialLogin(request: request, completionHandler: completionHandler)
     }
