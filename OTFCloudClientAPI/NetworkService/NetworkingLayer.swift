@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2021, Hippocrates Technologies S.r.l.. All rights reserved.
+ Copyright (c) 2024, Hippocrates Technologies Sagl. All rights reserved.
 
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -194,11 +194,21 @@ extension NetworkingLayer {
         })
     }
 
+    /// Resend or send the verification email
+    ///
+    ///  - Parameters:
+    ///   - reuqest: The resend request containing the user details
+    ///   - completionHandler: The closure called upon completion, with the result of the sign-up request.
+    public func resendVerifyEmail(request: Request.ResendVerifyEmail, completionHandler: @escaping (Result<Response.ResendVerifyEmail, ForgeError>) -> Void) {
+        performRequest(endpoint: Endpoint.resendVerifyEmail, method: .POST, request: request, authRequired: true, completionHandler: completionHandler)
+    }
+
     public func signOut(completionHandler: @escaping (Result<Response.LogOut, ForgeError>) -> Void) {
         guard let refreshToken = keychainService.loadAuth()?.refreshToken else {
             completionHandler(.success(Response.LogOut(message: "Logged out. It can take till 1 hour to logout in all your devices.")))
             return
         }
+        
         let request = Request.LogOut(refreshToken: refreshToken)
         performRequest(endpoint: Endpoint.logout, method: .POST, request: request, authRequired: true, completionHandler: { (response: Result<Response.LogOut, ForgeError>) in
             if case .success(_) = response {
@@ -567,8 +577,10 @@ extension NetworkingLayer {
 
     private func performMultipartURLRequest<T: Decodable>(_ request: URLRequest,
                                                           completionHandler: @escaping NetworkResponse<T>) {
+        logRequest(request)
         let log = logDebugInfo
         session.dataTask(request: request) { (data: Data?, response: URLResponse?, error: Error?) in
+            logResponse(request, response: response, data: data, error: error)
             if log {
                 OTFLog("Response: %{public}@", response?.description ?? "N/A")
                 if let data = data, let string = String(data: data, encoding: .utf8) {
@@ -612,6 +624,8 @@ extension NetworkingLayer {
                                 completionHandler(.failure(ForgeError(error: errorData)))
                             case 500...599:
                                 completionHandler(.failure(ForgeError.unknownErrorCode))
+                            case 600...699:
+                                completionHandler(.failure(ForgeError.emailNotVerified))
                             default:
                                 completionHandler(.failure(ForgeError.unknownErrorCode))
                             }
@@ -630,8 +644,10 @@ extension NetworkingLayer {
 
     private func performURLRequest<T: Decodable>(_ request: URLRequest,
                                                  completionHandler: @escaping NetworkResponse<T>) {
+        logRequest(request)
         let log = logDebugInfo
         session.dataTask(request: request) { (data: Data?, response: URLResponse?, error: Error?) in
+            logResponse(request, response: response, data: data, error: error)
             if log {
                 OTFLog("Response: %{public}@", response?.description ?? "N/A")
                 if let data = data, let string = String(data: data, encoding: .utf8) {
@@ -653,6 +669,8 @@ extension NetworkingLayer {
                                 completionHandler(.failure(ForgeError(error: errorData)))
                             case 500...599:
                                 completionHandler(.failure(ForgeError.unknownErrorCode))
+                            case 600...699:
+                                completionHandler(.failure(ForgeError.emailNotVerified))
                             default:
                                 completionHandler(.failure(ForgeError.unknownErrorCode))
                             }
