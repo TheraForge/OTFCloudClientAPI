@@ -7,9 +7,10 @@ source 'https://github.com/TheraForge/OTFCocoapodSpecs'
 target 'OTFCloudClientAPI' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
+  platform :ios, '14.6'
   pod 'KeychainAccess'
-  pod 'OTFCDTDatastore', '2.1.1-beta.4'
-  pod 'OTFUtilities', '1.0.1-beta'
+  pod 'OTFCDTDatastore', '2.1.1-beta.5'
+  pod 'OTFUtilities', '1.0.2-beta'
   # Pods for OTFCloudClientAPI
 
   target 'OTFCloudClientAPIWatchOS' do
@@ -17,8 +18,8 @@ target 'OTFCloudClientAPI' do
     use_frameworks!
     platform :watchos, '8.0'
     pod 'KeychainAccess'
-    pod 'OTFCDTDatastore', '2.1.1-beta.4'
-    pod 'OTFUtilities', '1.0.1-beta'
+    pod 'OTFCDTDatastore', '2.1.1-beta.5'
+    pod 'OTFUtilities', '1.0.2-beta'
   end
   
   target 'OTFCloudClientAPITests' do

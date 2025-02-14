@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2021, Hippocrates Technologies S.r.l.. All rights reserved.
+ Copyright (c) 2024, Hippocrates Technologies Sagl. All rights reserved.
 
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -64,6 +64,18 @@ public enum Response {
         }
 
         public let message: String
+    }
+    
+    public struct ResendVerifyEmail: Codable{
+        public init(error: Bool, message: String?, statusCode: Int){
+            self.error = error
+            self.message = message
+            self.statusCode = statusCode
+        }
+        
+        public let error: Bool
+        public let message: String?
+        public let statusCode: Int?
     }
 
     public struct ChangePassword: Codable {
