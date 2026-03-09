@@ -7,19 +7,19 @@ source 'https://github.com/TheraForge/OTFCocoapodSpecs'
 target 'OTFCloudClientAPI' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
-  platform :ios, '14.6'
+  platform :ios, '16.0'
   pod 'KeychainAccess'
-  pod 'OTFCDTDatastore', '2.1.1-beta.5'
-  pod 'OTFUtilities', '1.0.2-beta'
+  pod 'OTFCDTDatastore', '2.1.1-tf.2'
+  pod 'OTFUtilities', '2.0.0'
   # Pods for OTFCloudClientAPI
 
   target 'OTFCloudClientAPIWatchOS' do
     # Pods for testing
     use_frameworks!
-    platform :watchos, '8.0'
+    platform :watchos, '9.0'
     pod 'KeychainAccess'
-    pod 'OTFCDTDatastore', '2.1.1-beta.5'
-    pod 'OTFUtilities', '1.0.2-beta'
+    pod 'OTFCDTDatastore', '2.1.1-tf.2'
+    pod 'OTFUtilities', '2.0.0'
   end
   
   target 'OTFCloudClientAPITests' do
@@ -30,8 +30,8 @@ target 'OTFCloudClientAPI' do
     installer.generated_projects.each do |project|
       project.targets.each do |target|
         target.build_configurations.each do |config|
-          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
-          config.build_settings['WATCHOS_DEPLOYMENT_TARGET'] = '8.0'
+          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '16.0'
+          config.build_settings['WATCHOS_DEPLOYMENT_TARGET'] = '9.0'
         end
       end
     end

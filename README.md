@@ -6,6 +6,13 @@ OTFCloudClientAPI implements the functions required to interact with the TheraFo
 ## Change Log
 
 <details open>
+<summary>Release 2.0.0</summary>
+<ul>
+  <li>Updated dependecies for TheraForge 2.0.0 release</li>
+</ul>
+</details>
+
+<details>
 <summary>Release 1.0.5-beta</summary>
 <ul>
   <li>Added email verification support and flexible return codes</li>
