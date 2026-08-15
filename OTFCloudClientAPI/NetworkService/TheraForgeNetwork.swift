@@ -50,8 +50,8 @@ public protocol NetworkServiceProtocol {
 
     func signup(request: Request.SignUp, completionHandler: @escaping (_ result: Result<Response.Login, ForgeError>) -> Void)
 
-    func resendVerifyEmail(request: Request.ResendVerifyEmail, completionHandler: @escaping(_ result: Result<Response.ResendVerifyEmail, ForgeError>) -> Void)
-    
+    func resendVerifyEmail(request: Request.ResendVerifyEmail, completionHandler: @escaping (_ result: Result<Response.ResendVerifyEmail, ForgeError>) -> Void)
+
     func socialLogin(request: Request.SocialLogin, completionHandler: @escaping (_ result: Result<Response.Login, ForgeError>) -> Void)
 
     func signOut(completionHandler: @escaping (_ result: Result<Response.LogOut, ForgeError>) -> Void)
@@ -146,10 +146,10 @@ public class TheraForgeNetwork: NSObject, NetworkServiceProtocol, CDTNSURLSessio
         network.signup(request: request, completionHandler: completionHandler)
     }
 
-    public func resendVerifyEmail(request: Request.ResendVerifyEmail, completionHandler: @escaping(_ result: Result<Response.ResendVerifyEmail, ForgeError>) -> Void){
+    public func resendVerifyEmail(request: Request.ResendVerifyEmail, completionHandler: @escaping (_ result: Result<Response.ResendVerifyEmail, ForgeError>) -> Void) {
         network.resendVerifyEmail(request: request, completionHandler: completionHandler)
     }
-    
+
     public func socialLogin(request: Request.SocialLogin, completionHandler: @escaping (Result<Response.Login, ForgeError>) -> Void) {
         network.socialLogin(request: request, completionHandler: completionHandler)
     }

@@ -42,6 +42,11 @@ protocol EndpointImplementable {
     var path: String { get }
 }
 
+struct EndpointRequestPolicy: Equatable {
+    let requiresAuthorization: Bool
+    let includesClientHeader: Bool
+}
+
 enum Endpoint: EndpointImplementable {
     case login,
          signup,
@@ -107,4 +112,17 @@ enum Endpoint: EndpointImplementable {
     }
 
     static let apiVersion = "v1/"
+
+    var requestPolicy: EndpointRequestPolicy {
+        switch self {
+        case .login, .signup, .socialLogin, .forgotPassword, .refreshToken, .resetPassword:
+            return EndpointRequestPolicy(requiresAuthorization: false, includesClientHeader: false)
+        case .resendVerifyEmail:
+            // The verification-email endpoint rejects JWT authorization but still accepts
+            // the device client identifier used by the existing request contract.
+            return EndpointRequestPolicy(requiresAuthorization: false, includesClientHeader: true)
+        default:
+            return EndpointRequestPolicy(requiresAuthorization: true, includesClientHeader: true)
+        }
+    }
 }

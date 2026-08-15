@@ -9,7 +9,7 @@ target 'OTFCloudClientAPI' do
   use_frameworks!
   platform :ios, '16.0'
   pod 'KeychainAccess'
-  pod 'OTFCDTDatastore', '2.1.1-tf.2'
+  pod 'OTFCDTDatastore', '2.1.1-tf.3'
   pod 'OTFUtilities', '2.0.0'
   # Pods for OTFCloudClientAPI
 
@@ -18,7 +18,7 @@ target 'OTFCloudClientAPI' do
     use_frameworks!
     platform :watchos, '9.0'
     pod 'KeychainAccess'
-    pod 'OTFCDTDatastore', '2.1.1-tf.2'
+    pod 'OTFCDTDatastore', '2.1.1-tf.3'
     pod 'OTFUtilities', '2.0.0'
   end
   

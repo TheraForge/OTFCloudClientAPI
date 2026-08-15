@@ -125,8 +125,7 @@ extension NetworkingLayer {
         }
 
         eventSource?.onComplete { statusCode, reconnect, error in
-            OTFError("error: %{public}@", error?.localizedDescription ?? "")
-            OTFLog("SSE on completion callback statusCode: %{public}@", reconnect ?? false, statusCode ?? 0)
+            OTFLog("SSE completion status: %{public}ld", statusCode ?? 0)
             self.eventSourceOnComplete?(statusCode, reconnect, error)
         }
 
@@ -159,13 +158,12 @@ extension NetworkingLayer {
         }
 
         eventSource?.onComplete({ (statusCode, reconnect, error) in
-            OTFError("error: %{public}@", error?.localizedDescription ?? "")
-            OTFLog("SSE on completion callback statusCode: %{public}@", reconnect ?? false, statusCode ?? 0)
+            OTFLog("SSE completion status: %{public}ld", statusCode ?? 0)
             self.eventSourceOnComplete?(statusCode, reconnect, error)
         })
 
         eventSource?.onMessage({ event in
-            OTFLog("SSE Changes - On Message : %{public}@", event.message)
+            OTFLog("SSE Changes - received event: %{public}@", event.type.rawValue)
             self.onReceivedMessage?(event)
         })
 
@@ -181,14 +179,14 @@ extension NetworkingLayer {
 extension NetworkingLayer {
     // MARK: - Auth APIs
     public func login(request: Request.Login, completionHandler: @escaping (Result<Response.Login, ForgeError>) -> Void) {
-        performRequest(endpoint: Endpoint.login, method: .POST, request: request, authRequired: false, completionHandler: { [weak self] (response: Result<Response.Login, ForgeError>) in
+        performRequest(endpoint: Endpoint.login, method: .POST, request: request, completionHandler: { [weak self] (response: Result<Response.Login, ForgeError>) in
             self?.handleResponse(response)
             completionHandler(response)
         })
     }
 
     public func signup(request: Request.SignUp, completionHandler: @escaping (Result<Response.Login, ForgeError>) -> Void) {
-        performRequest(endpoint: Endpoint.signup, method: .POST, request: request, authRequired: false, completionHandler: { [weak self] (response: Result<Response.Login, ForgeError>) in
+        performRequest(endpoint: Endpoint.signup, method: .POST, request: request, completionHandler: { [weak self] (response: Result<Response.Login, ForgeError>) in
             self?.handleResponse(response)
             completionHandler(response)
         })
@@ -200,7 +198,7 @@ extension NetworkingLayer {
     ///   - reuqest: The resend request containing the user details
     ///   - completionHandler: The closure called upon completion, with the result of the sign-up request.
     public func resendVerifyEmail(request: Request.ResendVerifyEmail, completionHandler: @escaping (Result<Response.ResendVerifyEmail, ForgeError>) -> Void) {
-        performRequest(endpoint: Endpoint.resendVerifyEmail, method: .POST, request: request, authRequired: true, completionHandler: completionHandler)
+        performRequest(endpoint: Endpoint.resendVerifyEmail, method: .POST, request: request, completionHandler: completionHandler)
     }
 
     public func signOut(completionHandler: @escaping (Result<Response.LogOut, ForgeError>) -> Void) {
@@ -210,7 +208,7 @@ extension NetworkingLayer {
         }
         
         let request = Request.LogOut(refreshToken: refreshToken)
-        performRequest(endpoint: Endpoint.logout, method: .POST, request: request, authRequired: true, completionHandler: { (response: Result<Response.LogOut, ForgeError>) in
+        performRequest(endpoint: Endpoint.logout, method: .POST, request: request, completionHandler: { (response: Result<Response.LogOut, ForgeError>) in
             if case .success(_) = response {
                 TheraForgeKeychainService.shared.save(auth: nil)
                 TheraForgeKeychainService.shared.save(user: nil)
@@ -221,35 +219,35 @@ extension NetworkingLayer {
     }
 
     public func socialLogin(request: Request.SocialLogin, completionHandler: @escaping (Result<Response.Login, ForgeError>) -> Void) {
-        performRequest(endpoint: Endpoint.socialLogin, method: .POST, request: request, authRequired: false, completionHandler: { [weak self] (response: Result<Response.Login, ForgeError>) in
+        performRequest(endpoint: Endpoint.socialLogin, method: .POST, request: request, completionHandler: { [weak self] (response: Result<Response.Login, ForgeError>) in
             self?.handleResponse(response)
             completionHandler(response)
         })
     }
 
     public func changePassword(request: Request.ChangePassword, completionHandler: @escaping (Result<Response.ChangePassword, ForgeError>) -> Void) {
-        performRequest(endpoint: Endpoint.changePassword, method: .PUT, request: request, authRequired: true, completionHandler: completionHandler)
+        performRequest(endpoint: Endpoint.changePassword, method: .PUT, request: request, completionHandler: completionHandler)
     }
 
     public func deleteAccount(request: Request.DeleteAccount, completionHandler: @escaping (Result<Response.DeleteAccount, ForgeError>) -> Void) {
-        performRequest(endpoint: Endpoint.deleteAccount(userId: request.userId), method: .DELETE, request: request, authRequired: true, completionHandler: completionHandler)
+        performRequest(endpoint: Endpoint.deleteAccount(userId: request.userId), method: .DELETE, request: request, completionHandler: completionHandler)
     }
 
     public func forgotPassword(request: Request.ForgotPassword, completionHandler: @escaping (Result<Response.ForgotPassword, ForgeError>) -> Void) {
-        performRequest(endpoint: Endpoint.forgotPassword, method: .POST, request: request, authRequired: false, completionHandler: completionHandler)
+        performRequest(endpoint: Endpoint.forgotPassword, method: .POST, request: request, completionHandler: completionHandler)
     }
 
     public func refreshToken(completionHandler: @escaping (Result<Response.Login, ForgeError>) -> Void) {
         guard let token = keychainService.loadAuth()?.refreshToken else { fatalError("Auth token not provided") }
         let request = Request.RefreshToken(refreshToken: token)
-        performRequest(endpoint: Endpoint.refreshToken, method: .POST, request: request, authRequired: false, completionHandler: { [weak self] (response: Result<Response.Login, ForgeError>) in
+        performRequest(endpoint: Endpoint.refreshToken, method: .POST, request: request, completionHandler: { [weak self] (response: Result<Response.Login, ForgeError>) in
             self?.handleResponse(response)
             completionHandler(response)
         })
     }
 
     public func resetPassword(request: Request.ResetPassword, completionHandler: @escaping (Result<Response.ChangePassword, ForgeError>) -> Void) {
-        performRequest(endpoint: Endpoint.resetPassword, method: .PUT, request: request, authRequired: false, completionHandler: completionHandler)
+        performRequest(endpoint: Endpoint.resetPassword, method: .PUT, request: request, completionHandler: completionHandler)
     }
 
     // MARK: - File management
@@ -293,23 +291,23 @@ extension NetworkingLayer {
 
     public func deleteFile(request: Request.FileAttachmentId, completionHandler: @escaping (Result<Response.DeleteFile, ForgeError>) -> Void) {
         let params = ["attachmentID": request.attachmentID]
-        performRequest(endpoint: Endpoint.deleteFile, method: .DELETE, request: request, authRequired: true, containHeaders: true, parameters: params, completionHandler: completionHandler)
+        performRequest(endpoint: Endpoint.deleteFile, method: .DELETE, request: request, containHeaders: true, parameters: params, completionHandler: completionHandler)
     }
 
     public func getFileInfo(request: Request.FileAttachmentId, completionHandler: @escaping (Result<Response.FileInfo, ForgeError>) -> Void) {
         let params = ["attachmentID": request.attachmentID]
-        performRequest(endpoint: Endpoint.getFileInfo, method: .GET, request: request, authRequired: true, containHeaders: true, parameters: params, completionHandler: completionHandler)
+        performRequest(endpoint: Endpoint.getFileInfo, method: .GET, request: request, containHeaders: true, parameters: params, completionHandler: completionHandler)
     }
 
     public func getRevision(request: Request.FileAttachmentId, completionHandler: @escaping (Result<Response.GetRevision, ForgeError>) -> Void) {
         let params = ["attachmentID": request.attachmentID]
-        performRequest(endpoint: Endpoint.getFileRevision, method: .GET, request: request, authRequired: true, containHeaders: true, parameters: params, completionHandler: completionHandler)
+        performRequest(endpoint: Endpoint.getFileRevision, method: .GET, request: request, containHeaders: true, parameters: params, completionHandler: completionHandler)
     }
 
     public func getFileInfo(request: Request.FileRename, completionHandler: @escaping (Result<Response.FileInfo, ForgeError>) -> Void) {
         let params = ["attachmentID": request.attachmentID,
                       "name": request.name]
-        performRequest(endpoint: Endpoint.fileRename, method: .GET, request: request, authRequired: true, containHeaders: true, parameters: params, completionHandler: completionHandler)
+        performRequest(endpoint: Endpoint.fileRename, method: .GET, request: request, containHeaders: true, parameters: params, completionHandler: completionHandler)
     }
 }
 
@@ -318,8 +316,6 @@ extension NetworkingLayer {
     private func handleResponse(_ response: Result<Response.Login, ForgeError>) {
         switch response {
         case .success(let result):
-            OTFLog("Access token : %{public}@", result.accessToken.token)
-            OTFLog("Refresh access token : %{public}@", result.accessToken.refreshToken)
             self.currentAuth = result.accessToken
             self.keychainService.save(auth: result.accessToken)
             self.keychainService.save(user: result.data)
@@ -336,7 +332,8 @@ extension NetworkingLayer {
                             containHeaders: Bool? = false,
                             parameters: [String: Any]? = nil,
                             parameterData: Data? = nil,
-                            authRequired: Bool) -> URLRequest {
+                            authRequired: Bool,
+                            includeClientHeader: Bool = false) -> URLRequest {
         var request = URLRequest(url: Self.configurations.APIBaseURL.appendingPathComponent("\(Endpoint.apiVersion)" + endpoint.path), cachePolicy: URLRequest.CachePolicy.reloadIgnoringCacheData)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         if let parameters = parameters {
@@ -355,9 +352,11 @@ extension NetworkingLayer {
             request.httpBody = parameterData
         }
 
-        if authRequired {
-            request.addValue("\(NetworkingLayer.shared.identifierForVendor)", forHTTPHeaderField: "Client")
+        if authRequired || includeClientHeader {
+            request.addValue(identifierForVendor, forHTTPHeaderField: "Client")
+        }
 
+        if authRequired {
             if let currentAuth = currentAuth {
                 request.addValue("Bearer \(currentAuth.token)", forHTTPHeaderField: "Authorization")
             } else if let auth = keychainService.loadAuth() {
@@ -373,7 +372,8 @@ extension NetworkingLayer {
                                       method: HTTPMethod,
                                       parameters: [String: Any]? = nil,
                                       parameterData: Data? = nil,
-                                      authRequired: Bool) -> URLRequest {
+                                      authRequired: Bool,
+                                      includeClientHeader: Bool = false) -> URLRequest {
         var request = URLRequest(url: Self.configurations.APIBaseURL.appendingPathComponent("\(Endpoint.apiVersion)" + endpoint.path), cachePolicy: URLRequest.CachePolicy.reloadIgnoringCacheData)
         request.addValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
         request.addValue("image/png", forHTTPHeaderField: "Content-Type")
@@ -383,9 +383,11 @@ extension NetworkingLayer {
         if let parameterData = parameterData {
             request.httpBody = parameterData
         }
-        if authRequired {
+        if authRequired || includeClientHeader {
             request.addValue("\(NetworkingLayer.shared.identifierForVendor)", forHTTPHeaderField: "Client")
+        }
 
+        if authRequired {
             if let currentAuth = currentAuth {
                 request.addValue("Bearer \(currentAuth.token)", forHTTPHeaderField: "Authorization")
             } else if let auth = keychainService.loadAuth() {
@@ -490,39 +492,48 @@ extension NetworkingLayer {
         return request
     }
 
-    private func performRequest<Request: Encodable, Response: Decodable>(endpoint: EndpointImplementable,
+    private func performRequest<Request: Encodable, Response: Decodable>(endpoint: Endpoint,
                                                                          method: HTTPMethod,
                                                                          request: Request,
-                                                                         authRequired: Bool,
                                                                          containHeaders: Bool? = false,
                                                                          parameters: [String: Any]? = nil,
                                                                          completionHandler: @escaping NetworkResponse<Response>) {
         // Because the input is always codable, it is safe to force unwrap the JSON serialization results
+        let policy = endpoint.requestPolicy
         var urlRequest: URLRequest!
         if method == .POST {
             do {
                 let parameters = try JSONEncoder().encode(request)
                 urlRequest = self.urlRequest(endpoint: endpoint, method: method, containHeaders: containHeaders,
-                                             parameterData: parameters, authRequired: authRequired)
+                                             parameterData: parameters,
+                                             authRequired: policy.requiresAuthorization,
+                                             includeClientHeader: policy.includesClientHeader)
             } catch {
                 completionHandler(.failure(ForgeError(nsError: error as NSError)))
             }
 
         } else if method  == .DELETE {
             urlRequest = self.urlRequest(endpoint: endpoint, method: method, containHeaders: containHeaders,
-                                         parameters: parameters, authRequired: authRequired)
+                                         parameters: parameters,
+                                         authRequired: policy.requiresAuthorization,
+                                         includeClientHeader: policy.includesClientHeader)
         } else if method == .PUT {
 
             do {
                 let parameters = try JSONEncoder().encode(request)
                 urlRequest = self.urlRequestWithHeader(endpoint: endpoint, method: method,
-                                                       parameterData: parameters, authRequired: authRequired)
+                                                       parameterData: parameters,
+                                                       authRequired: policy.requiresAuthorization,
+                                                       includeClientHeader: policy.includesClientHeader)
             } catch {
                 completionHandler(.failure(ForgeError(nsError: error as NSError)))
             }
 
         } else {
-            urlRequest = self.urlRequest(endpoint: endpoint, method: method, containHeaders: containHeaders, parameters: parameters, authRequired: authRequired)
+            urlRequest = self.urlRequest(endpoint: endpoint, method: method, containHeaders: containHeaders,
+                                         parameters: parameters,
+                                         authRequired: policy.requiresAuthorization,
+                                         includeClientHeader: policy.includesClientHeader)
         }
 
         switch endpoint {
@@ -530,7 +541,7 @@ extension NetworkingLayer {
             performURLRequest(urlRequest, completionHandler: completionHandler)
         default:
             checkAuthAndPerformURLRequest(urlRequest,
-                                          authRequired: authRequired,
+                                          authRequired: policy.requiresAuthorization,
                                           expectJSONResponse: true,
                                           completionHandler: completionHandler)
         }
@@ -577,15 +588,10 @@ extension NetworkingLayer {
 
     private func performMultipartURLRequest<T: Decodable>(_ request: URLRequest,
                                                           completionHandler: @escaping NetworkResponse<T>) {
-        logRequest(request)
         let log = logDebugInfo
         session.dataTask(request: request) { (data: Data?, response: URLResponse?, error: Error?) in
-            logResponse(request, response: response, data: data, error: error)
-            if log {
-                OTFLog("Response: %{public}@", response?.description ?? "N/A")
-                if let data = data, let string = String(data: data, encoding: .utf8) {
-                    OTFLog("Response string:\n", string)
-                }
+            if log, let statusCode = (response as? HTTPURLResponse)?.statusCode {
+                OTFLog("API response status: %{public}ld", statusCode)
             }
             if let error = error {
                 completionHandler(.failure(error.forgeError))
@@ -644,15 +650,10 @@ extension NetworkingLayer {
 
     private func performURLRequest<T: Decodable>(_ request: URLRequest,
                                                  completionHandler: @escaping NetworkResponse<T>) {
-        logRequest(request)
         let log = logDebugInfo
         session.dataTask(request: request) { (data: Data?, response: URLResponse?, error: Error?) in
-            logResponse(request, response: response, data: data, error: error)
-            if log {
-                OTFLog("Response: %{public}@", response?.description ?? "N/A")
-                if let data = data, let string = String(data: data, encoding: .utf8) {
-                    OTFLog("Response string:\n", string)
-                }
+            if log, let statusCode = (response as? HTTPURLResponse)?.statusCode {
+                OTFLog("API response status: %{public}ld", statusCode)
             }
             if let error = error {
                 completionHandler(.failure(error.forgeError))
