@@ -60,8 +60,61 @@ public enum Request {
         public let refreshToken: String
     }
 
+    public struct SignUpLocation: Codable, Equatable {
+        public init(
+            displayName: String? = nil,
+            addressLine1: String? = nil,
+            addressLine2: String? = nil,
+            city: String? = nil,
+            region: String? = nil,
+            postalCode: String? = nil,
+            countryCode: String? = nil
+        ) {
+            self.displayName = displayName
+            self.addressLine1 = addressLine1
+            self.addressLine2 = addressLine2
+            self.city = city
+            self.region = region
+            self.postalCode = postalCode
+            self.countryCode = countryCode
+        }
+
+        public let displayName: String?
+        public let addressLine1: String?
+        public let addressLine2: String?
+        public let city: String?
+        public let region: String?
+        public let postalCode: String?
+        public let countryCode: String?
+    }
+
+    public struct SignUpCondition: Codable, Equatable {
+        public init(code: String, name: String) {
+            self.code = code
+            self.name = name
+        }
+
+        public let code: String
+        public let name: String
+    }
+
     public struct SignUp: Codable {
-        public init(email: String, password: String, first_name: String, last_name: String, type: UserType, dob: String, gender: String, phoneNo: String, encryptedMasterKey: String, publicKey: String, encryptedDefaultStorageKey: String, encryptedConfidentialStorageKey: String) {
+        public init(
+            email: String,
+            password: String,
+            first_name: String,
+            last_name: String,
+            type: UserType,
+            dob: String,
+            gender: String,
+            phoneNo: String,
+            encryptedMasterKey: String,
+            publicKey: String,
+            encryptedDefaultStorageKey: String,
+            encryptedConfidentialStorageKey: String,
+            location: SignUpLocation? = nil,
+            conditions: [SignUpCondition]? = nil
+        ) {
             self.email = email
             self.password = password
             self.first_name = first_name
@@ -74,6 +127,8 @@ public enum Request {
             self.publicKey = publicKey
             self.encryptedConfidentialStorageKey = encryptedConfidentialStorageKey
             self.encryptedDefaultStorageKey = encryptedDefaultStorageKey
+            self.location = location
+            self.conditions = conditions
         }
 
         public let email: String
@@ -88,17 +143,52 @@ public enum Request {
         public let publicKey: String
         public let encryptedDefaultStorageKey: String
         public let encryptedConfidentialStorageKey: String
+        public let location: SignUpLocation?
+        public let conditions: [SignUpCondition]?
     }
 
     public struct SocialLogin: Codable {
         public init(userType: UserType,
                     socialType: Request.SocialLogin.SocialType,
                     authType: Request.SocialLogin.AuthType,
-                    identityToken: String) {
+                    identityToken: String,
+                    location: SignUpLocation? = nil,
+                    conditions: [SignUpCondition]? = nil) {
             self.userType = userType
             self.socialType = socialType
             self.requestType = authType
             self.identityToken = identityToken
+            self.location = authType == .signup ? location : nil
+            self.conditions = authType == .signup ? conditions : nil
+        }
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            let requestType = try container.decode(AuthType.self, forKey: .requestType)
+            let location: SignUpLocation?
+            let conditions: [SignUpCondition]?
+
+            if requestType == .signup {
+                location = try container.decodeIfPresent(SignUpLocation.self, forKey: .location)
+                conditions = try container.decodeIfPresent([SignUpCondition].self, forKey: .conditions)
+            } else {
+                location = nil
+                conditions = nil
+            }
+
+            self.init(
+                userType: try container.decode(UserType.self, forKey: .userType),
+                socialType: try container.decode(SocialType.self, forKey: .socialType),
+                authType: requestType,
+                identityToken: try container.decode(String.self, forKey: .identityToken),
+                location: location,
+                conditions: conditions
+            )
+        }
+
+        // swiftlint:disable:next nesting
+        private enum CodingKeys: String, CodingKey {
+            case userType, socialType, requestType, identityToken, location, conditions
         }
 
         // swiftlint:disable:next nesting
@@ -115,6 +205,8 @@ public enum Request {
         public let socialType: SocialType
         public let requestType: AuthType
         public let identityToken: String
+        public let location: SignUpLocation?
+        public let conditions: [SignUpCondition]?
     }
 
     public struct ChangePassword: Codable {

@@ -6,6 +6,16 @@ OTFCloudClientAPI implements the functions required to interact with the TheraFo
 ## Change Log
 
 <details open>
+<summary>Release 2.1.0</summary>
+<ul>
+  <li>Added optional location and health-condition metadata to Sign Up and social sign-up requests</li>
+  <li>Updated verification email requests to send the client identifier without authorization</li>
+  <li>Improved privacy by no longer logging access or refresh tokens, request data, or response bodies</li>
+  <li>Updated the OTFCDTDatastore dependency to 2.1.1-tf.3</li>
+</ul>
+</details>
+
+<details>
 <summary>Release 2.0.0</summary>
 <ul>
   <li>Updated dependecies for TheraForge 2.0.0 release</li>

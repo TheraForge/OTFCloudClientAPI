@@ -60,8 +60,6 @@ opt_in_rules: # some rules are only opt-in
     - file_name
     - convenience_type
     - modifier_order
-    - unused_private_declaration
-
     - private_outlet
     - prohibited_super_call
     - protocol_property_accessors_order
